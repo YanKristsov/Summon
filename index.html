@@ -1,1873 +1,517 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ангелы и Архоны</title>
+    <title>Ангелы и Архоны — золотой бестиарий</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-        
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8fafc;
-            color: #334155;
-            line-height: 1.6;
-            padding: 20px;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            background: #fff9ef;   /* тёплый желтоватый фон */
+            color: #3b2e1f;
+            line-height: 1.5;
+            padding: 2rem 1rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
         }
-        
+
+        .page-wrapper {
+            max-width: 880px;
+            width: 100%;
+        }
+
         .main-title {
-            color: #475569;
-            font-size: 32px;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
+            color: #b87c2e;
+            font-size: 2.2rem;
+            margin-bottom: 1.8rem;
+            padding-bottom: 0.75rem;
             text-align: center;
-            width: 100%;
-            max-width: 600px;
-            border-bottom: 2px solid #cbd5e1;
-            font-weight: bold;
+            border-bottom: 3px solid #f3d9a4;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            text-shadow: 1px 1px 0 rgba(255,235,190,0.6);
         }
 
-	.explanation-block {
-    width: 100%;
-    max-width: 100%;
-    margin-bottom: 30px;
-    padding: 25px 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-	}
+        /* карточка существа */
+        .creature-card {
+            background: #ffffffd9;
+            backdrop-filter: blur(0px);
+            background: #fffef7;
+            border-radius: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 6px 14px rgba(160, 120, 40, 0.08);
+            border: 1px solid #f7e5b5;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
 
-	.explanation-block p {
-    font-size: 15px;
-    line-height: 1.7;
-    color: #334155;
-    text-align: justify;
-    margin-bottom: 0;
-	}
-        
-        .creature-container {
-            width: 100%;
-            max-width: 600px;
-            margin-bottom: 20px;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            border-left: 4px solid #94a3b8;
+        /* заголовок-переключатель */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 1.2rem 1.8rem;
+            background: #fffcf0;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+            border-bottom: 1px solid #f5e2bc;
+        }
+
+        .card-header:hover {
+            background: #fff7e4;
+        }
+
+        .title-group {
+            flex: 1;
         }
 
         .creature-title {
-            color: #475569;
-            font-size: 22px;
-            margin-bottom: 8px;
-            text-align: center;
+            font-size: 1.7rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #b8712c, #e09d32);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin: 0 0 0.2rem 0;
+            line-height: 1.2;
         }
 
         .creature-level {
-            color: #64748b;
-            font-size: 16px;
-            margin-bottom: 15px;
-            text-align: center;
-            font-weight: bold;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #b97f3a;
+            letter-spacing: 0.3px;
+        }
+
+        /* иконка раскрытия — бледная, едва заметная */
+        .toggle-icon {
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: #e9c48b;
+            transition: transform 0.2s ease, color 0.2s;
+            margin-left: 1rem;
+            opacity: 0.7;
+        }
+        .card-header:hover .toggle-icon {
+            color: #dba551;
+            opacity: 0.9;
+        }
+
+        /* внутреннее содержимое */
+        .card-body {
+            padding: 0 0 1.2rem 0;
+            border-top: 1px solid #f7e9cf;
+            background: #fffef7;
+        }
+
+        .card-body.collapsed {
+            display: none;
+        }
+
+        /* блок lore — жёлтая палитра */
+        .explanation-block {
+            background-color: #fff6e6;
+            border-left: 5px solid #f3c26b;
+            margin: 1rem 1.8rem 1.2rem 1.8rem;
+            padding: 1rem 1.25rem;
+            border-radius: 1rem;
+            box-shadow: inset 0 0 0 1px #fff0d4;
         }
 
         .subtitle {
-            color: #64748b;
-            font-size: 14px;
-            margin-bottom: 20px;
-            line-height: 1.5;
-            text-align: center;
+            font-size: 0.95rem;
+            line-height: 1.55;
+            color: #5c481f;
+            text-align: justify;
         }
-        
-        .abilities-container {
-            width: 100%;
-        }
-        
-        .ability-card {
-            background-color: #fff;
-            border-radius: 6px;
-            margin-bottom: 12px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .ability-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 14px;
-            background-color: #f8fafc;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .ability-title {
-            font-weight: 600;
-            font-size: 15px;
-            color: #334155;
-            flex: 1;
-        }
-        
-        .ability-level {
-            background-color: #e2e8f0;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #475569;
-        }
-        
-        .ability-description {
-            padding: 12px 14px;
-            font-size: 14px;
-            color: #475569;
-        }
-        
+
+        /* теги */
         .ability-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
-            padding: 12px 14px;
-            background-color: #f8fafc;
-            border-bottom: 1px solid #e2e8f0;
+            gap: 0.5rem;
+            margin: 0 1.8rem 1rem 1.8rem;
         }
-        
+
         .tag {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            background-color: #e2e8f0;
-            color: #475569;
-        }
-        
-        .ability-details {
-            padding: 12px 14px;
-        }
-        
-        .ability-info {
-            margin-bottom: 6px;
-            font-size: 14px;
-        }
-        
-        .ability-info b {
-            color: #475569;
+            background: #f8efda;
+            color: #b5732e;
+            padding: 0.2rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
             font-weight: 600;
+            border: 1px solid #f3dfb2;
         }
-        
+
+        .abilities-container {
+            padding: 0 1.8rem 0.5rem 1.8rem;
+        }
+
+        .ability-card {
+            background: #fffff5;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #f3e2bd;
+        }
+
+        .ability-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 0.75rem 1rem;
+            background: #fffcf2;
+            border-bottom: 1px solid #f7e6c6;
+        }
+
+        .ability-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #a5661a;
+        }
+
+        .ability-level {
+            background: #f7efdd;
+            padding: 0.2rem 0.65rem;
+            border-radius: 2rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #b76e2a;
+        }
+
+        .ability-description,
+        .ability-effect {
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            color: #4b3a1e;
+        }
+
+        .ability-effect {
+            background: #fff8ea;
+            border-radius: 0.75rem;
+            margin: 0.5rem 1rem;
+            border-left: 3px solid #f5cf93;
+        }
+
+        .option-block {
+            background: #fff7e8;
+            margin: 0.75rem 1rem;
+            padding: 0.7rem 1rem;
+            border-radius: 0.75rem;
+            border-left: 3px solid #f3d9a4;
+            font-size: 0.85rem;
+        }
+
+        .option-title {
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            color: #a4661c;
+        }
+
+        .damage {
+            font-family: monospace;
+            background: #f3e5cd;
+            padding: 0.1rem 0.4rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            color: #bc6f25;
+        }
+
+        .spells-list {
+            padding-left: 1.25rem;
+            margin: 0.5rem 0;
+            font-size: 0.85rem;
+        }
+
+        .ability-details {
+            padding: 0.75rem 1rem;
+        }
+
+        .ability-info {
+            font-size: 0.85rem;
+            margin-bottom: 0.3rem;
+            color: #5c481f;
+        }
+
         .divider {
             height: 1px;
-            background-color: #e2e8f0;
-            margin: 12px 0;
+            background: #f3e2bd;
+            margin: 0.75rem 0;
         }
-        
-        .ability-effect {
-            padding: 12px 14px;
-            background-color: #f8fafc;
-            border-radius: 6px;
-            margin: 12px 0;
-            font-size: 14px;
-            line-height: 1.5;
-            color: #334155;
-            border-left: 3px solid #cbd5e1;
-        }
-        
-        .option-block {
-            margin: 8px 0;
-            padding: 8px 10px;
-            background-color: #f8fafc;
-            border-radius: 6px;
-            border-left: 3px solid #cbd5e1;
-            font-size: 13px;
-        }
-        
-        .option-title {
-            font-weight: 600;
-            margin-bottom: 4px;
-            color: #475569;
-            font-size: 14px;
-        }
-        
-        .damage {
-            font-family: 'Courier New', monospace;
-            background-color: #e2e8f0;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: 600;
-            color: #334155;
-        }
-        
-        .spells-list {
-            padding-left: 18px;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-        
-        .spells-list li {
-            margin-bottom: 4px;
-        }
-        
-        .info-note {
-            background-color: #f8fafc;
-            border-radius: 6px;
-            padding: 16px;
-            margin-top: 20px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .info-note h3 {
-            color: #475569;
-            font-size: 16px;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        
-        .info-note p {
-            font-size: 14px;
-            margin-bottom: 8px;
-            line-height: 1.5;
-        }
-        
-        @media (max-width: 400px) {
-            body {
-                padding: 15px;
-            }
-            
-	    .explanation-block {
-        padding: 20px 15px;
-   		}
-    
-    
-	    .explanation-block p {
-        font-size: 14px;
-    		}
-		}
-            .main-title {
-                font-size: 26px;
-            }
-            
-            .creature-title {
-                font-size: 19px;
-            }
-            
-            .ability-header {
-                padding: 10px 12px;
-            }
-            
-            .ability-title {
-                font-size: 14px;
-            }
 
-            .creature-container {
-                padding: 15px;
+        .info-note {
+            background: #fff6e4;
+            margin: 1rem 1.8rem 1.5rem 1.8rem;
+            padding: 1rem 1.25rem;
+            border-radius: 1rem;
+            border: 1px solid #f9e8c9;
+        }
+        .info-note h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #b87c2e;
+        }
+
+        @media (max-width: 640px) {
+            .card-header {
+                padding: 1rem 1.2rem;
             }
-            
-            .option-block {
-                padding: 6px 8px;
+            .creature-title {
+                font-size: 1.4rem;
+            }
+            .explanation-block,
+            .ability-tags,
+            .abilities-container,
+            .info-note {
+                margin-left: 1rem;
+                margin-right: 1rem;
             }
         }
     </style>
 </head>
 <body>
-
- 
+<div class="page-wrapper">
     <div class="main-title">Ангелы</div>
 
-        <div class="creature-container">
-        <h1 class="creature-title">Кассисиан (Ангел архивов)</h1>
-        <div class="creature-level">Существо 1</div>
-
-        <div class="explanation-block">
-
-        <p class="subtitle">Самые слабые из ангелов, кассисианы обычно выполняют роль служителей-посланников более могущественных ангелов или духовными наставниками смертных. Несмотря на свой ограниченный интеллект, кассисианы обладают точной памятью, особенно касательно священных писаний. Большинство кассисианов сформировано из душ праведных смертных, но некоторые возникают из фрагментов более могущественных ангелов, погибших в служении небесным царствам.</p>
+    <!-- **************************************** -->
+    <!-- КАССИСИАН (Ангел архивов) -->
+    <!-- **************************************** -->
+    <div class="creature-card" data-id="cassian">
+        <div class="card-header">
+            <div class="title-group">
+                <div class="creature-title">Кассисиан (Ангел архивов)</div>
+                <div class="creature-level">Существо 1</div>
+            </div>
+            <div class="toggle-icon">▼</div>
         </div>
-
-
-        <div class="ability-tags">
-            <span class="tag">[НГ]</span>
-            <span class="tag">[Крошечное]</span>
-            <span class="tag">[Ангел]</span>
-            <span class="tag">[Небожитель]</span>
+        <div class="card-body">
+            <div class="explanation-block"><p class="subtitle">Самые слабые из ангелов, кассисианы обычно выполняют роль служителей-посланников более могущественных ангелов или духовных наставников смертных. Несмотря на свой ограниченный интеллект, кассисианы обладают точной памятью, особенно касательно священных писаний. Большинство кассисианов сформировано из душ праведных смертных, но некоторые возникают из фрагментов более могущественных ангелов, погибших в служении небесным царствам.</p></div>
+            <div class="ability-tags"><span class="tag">[НГ]</span><span class="tag">[Крошечное]</span><span class="tag">[Ангел]</span><span class="tag">[Небожитель]</span></div>
+            <div class="abilities-container">
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Характеристики</div></div><div class="ability-details"><div class="ability-info"><b>Восприятие:</b> +6; ночное зрение</div><div class="ability-info"><b>Языки:</b> Небесный, Общий, Драконий, Инфернальный</div><div class="ability-info"><b>Навыки:</b> Акробатика +6, Дипломатия +6, Религия +6, Скрытность +6</div><div class="ability-info"><b>Характеристики:</b> Сил -1, Лвк +1, Вын +2, Инт -1, Мдр +1, Хар +1</div><div class="divider"></div><div class="ability-info"><b>КБ:</b> 18 (статусный бонус +1 против злых существ)</div><div class="ability-info"><b>ПЗ:</b> 20</div><div class="ability-info"><b>Стойкость:</b> +7, <b>Рефлексы:</b> +6, <b>Воля:</b> +4</div><div class="ability-info"><b>Уязвимость:</b> зло 3, <b>Сопротивление:</b> холод 3, огонь 3</div></div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Предоставление защиты</div><div class="ability-level">Пассивно</div></div><div class="ability-description">Не-злое существо может носить добровольного кассисиана в качестве шлема. В этом состоянии кассисиан не может совершать действий, но его статусный бонус +1 к КБ и спасброскам против злых существ также распространяется на носителя.</div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Скорость</div></div><div class="ability-details"><div class="ability-info"><b>Полёт:</b> 40 футов</div></div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Ближний бой [одно действие]</div></div><div class="ability-details"><div class="ability-info"><b>Атака:</b> удар головой +6 (проворное, фехтовальное, добро, магическое)</div><div class="ability-info"><b>Урон:</b> <span class="damage">1d6-1</span> дробящий + <span class="damage">1d4</span> добрый</div></div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Сакральные врождённые заклинания (СЛ 16)</div></div><div class="ability-details"><ul class="spells-list"><li><b>4-й:</b> чтение знамений</li><li><b>1-й:</b> обнаружение мировоззрения (только зло), исцеление</li><li><b>Заговоры:</b> определение направления, свет</li></ul></div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Лучи из глаз [два действия]</div></div><div class="ability-description">Выпускает лучи тепла или холода, <span class="damage">2d6</span> урона (Рефлекс СЛ 17) по линии 15 футов. Перезарядка <span class="damage">1d4</span> раундов.</div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Хранилище знаний</div></div><div class="ability-description">Обладает совершенной памятью. Может совершать проверки Знания на любую тему, если сталкивался с ней раньше.</div></div>
+            </div>
+            <div class="info-note"><h3>Дополнительная информация</h3><p>Ангелы обычно живут в Нирване или других Небесных планах, но могут быть призваны на Материальный план.</p></div>
         </div>
+    </div>
 
-        <div class="abilities-container">
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Характеристики</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Восприятие:</b> +6; ночное зрение</div>
-                    <div class="ability-info"><b>Языки:</b> Небесный, Общий, Драконий, Инфернальный</div>
-                    <div class="ability-info"><b>Навыки:</b> Акробатика +6, Дипломатия +6, Религия +6, Скрытность +6</div>
-                    <div class="ability-info"><b>Характеристики:</b> Сил -1, Лвк +1, Вын +2, Инт -1, Мдр +1, Хар +1</div>
-                    <div class="divider"></div>
-                    <div class="ability-info"><b>КБ:</b> 18 (статусный бонус +1 против злых существ)</div>
-                    <div class="ability-info"><b>ПЗ:</b> 20</div>
-                    <div class="ability-info"><b>Стойкость:</b> +7</div>
-                    <div class="ability-info"><b>Рефлексы:</b> +6</div>
-                    <div class="ability-info"><b>Воля:</b> +4 (статусный бонус +1 против злых существ)</div>
-                    <div class="ability-info"><b>Уязвимость:</b> зло 3</div>
-                    <div class="ability-info"><b>Сопротивление:</b> холод 3, огонь 3</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Предоставление защиты</div>
-                    <div class="ability-level">Пассивно</div>
-                </div>
-                <div class="ability-description">
-                    Не-злое существо может носить добровольного кассисиана в качестве шлема. В этом состоянии кассисиан не может совершать действий, но его статусный бонус +1 к КБ и спасброскам против злых существ также распространяется на носителя.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Скорость</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Полёт:</b> 40 футов</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Ближний бой [одно действие]</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Атака:</b> удар головой +6 (проворное, фехтовальное, добро, магическое)</div>
-                    <div class="ability-info"><b>Урон:</b> <span class="damage">1d6-1</span> дробящий + <span class="damage">1d4</span> добрый</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Сакральные врождённые заклинания (СЛ 16)</div>
-                </div>
-                <div class="ability-details">
-                    <ul class="spells-list">
-                        <li><b>4-й:</b> чтение знамений (read omens)</li>
-                        <li><b>1-й:</b> обнаружение мировоззрения (detect alignment) (произвольное, только зло), исцеление (heal)</li>
-                        <li><b>Заговоры (1-й):</b> определение направления (know direction), свет (light)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Смена облика [одно действие]</div>
-                    <div class="ability-level">Концентрация</div>
-                </div>
-                <div class="ability-description">
-                    Кассисиан может принять облик голубя, крылатого гуманоида, собаки или рыбы. Скорость и бонусы не меняются, но может измениться вид урона.
-                </div>
-                <div class="option-block">
-                    <div class="option-title">Собака</div>
-                    <div class="ability-info"><b>Размер:</b> Маленький</div>
-                    <div class="ability-info"><b>Нюх:</b> 30 футов (неточное)</div>
-                    <div class="ability-info"><b>Скорость:</b> 40 футов</div>
-                    <div class="ability-info"><b>Атака:</b> челюсти +7</div>
-                    <div class="ability-info"><b>Урон:</b> <span class="damage">1d6+2</span> колющий + Нокдаун (Knockdown)</div>
-                </div>
-                <div class="option-block">
-                    <div class="option-title">Рыба</div>
-                    <div class="ability-info"><b>Скорость:</b> Плавание 30 футов</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Лучи из глаз [два действия]</div>
-                    <div class="ability-level">Концентрация</div>
-                </div>
-                <div class="ability-description">
-                    Кассисиан выпускает лучи тепла или холода, нанося <span class="damage">2d6</span> урона от холода или огня (базовый спасбросок Рефлексов против СЛ 17) всем существам на 15-футовой линии.
-                </div>
-                <div class="ability-effect">
-                    После этого кассисиан не может использовать Лучи из глаз в течение <span class="damage">1d4</span> раундов.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Хранилище знаний</div>
-                </div>
-                <div class="ability-description">
-                    Хотя кассисиан не особенно умён, он обладает совершенной памятью. Это позволяет ему совершать проверки Знания на любую тему (по усмотрению Ведущего), если он сталкивался с ней раньше.
-                </div>
-            </div>
+    <!-- ХОРАЛЬНЫЙ АНГЕЛ -->
+    <div class="creature-card" data-id="choral">
+        <div class="card-header">
+            <div class="title-group"><div class="creature-title">Хоральный ангел</div><div class="creature-level">Существо 6</div></div>
+            <div class="toggle-icon">▼</div>
         </div>
-
-        <div class="info-note">
-            <h3>Дополнительная информация</h3>
-            
-            <div class="option-block">
-                <div class="option-title">Ангельские божества</div>
-                <p>Самые могущественные ангелы принадлежат к категории полубогов, известных как светозарные владыки. Наиболее известной является Саренрэй.</p>
-            </div>
-            
-            <div class="option-block">
-                <div class="option-title">Места обитания</div>
-                <p>Ангелы обычно живут в Нирване или других Небесных планах, но могут быть призваны на Материальный план для совета или помощи.</p>
+        <div class="card-body">
+            <div class="explanation-block"><p class="subtitle">Хоральные ангелы — потрясающие певцы, наполняющие залы Нирваны благочестивыми песнопениями. Появляются из душ талантливых бардов. Хотя сторонятся конфликтов, иногда приходят к смертным с добрыми вестями.</p></div>
+            <div class="ability-tags"><span class="tag">[НД]</span><span class="tag">[Маленькое]</span><span class="tag">[Ангел]</span><span class="tag">[Небожитель]</span></div>
+            <div class="abilities-container">
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Характеристики</div></div><div class="ability-details"><div class="ability-info"><b>Восприятие:</b> +14; КБ 24, ПЗ 100, Стойкость +10, Рефлексы +14, Воля +16; уязвимость зло 5; сопротивление звуку 5.</div><div class="ability-info"><b>Навыки:</b> Акробатика +12, Дипломатия +15, Выступление +17, Религия +14.</div></div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Аура гармонии (20 футов)</div></div><div class="ability-description">Союзники получают +2 к урону звуком и +1 к КБ/спасброскам против слуховых эффектов; враги получают штраф –2 к урону звуком и –1 к КБ/спасброскам.</div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Пронзающий гимн</div></div><div class="ability-details"><div class="ability-info"><b>Дальний бой:</b> +17, дистанция 90 футов, урон <span class="damage">4d6</span> звук + <span class="damage">1d6</span> добрый + оглушающая ария.</div></div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Гармонизация</div></div><div class="ability-description">Передаёт гармонию другому хоральному ангелу, позволяя заменить звуковой взрыв на calm emotions или heroism.</div></div>
             </div>
         </div>
     </div>
 
-    <!-- Второе существо: ХОРАЛЬНЫЙ АНГЕЛ -->
-    <div class="creature-container">
-        <h1 class="creature-title">Хоральный ангел</h1>
-        <div class="creature-level">Существо 6</div>
-        <div class="explanation-block">
-
-        <p class="subtitle">Хоральные ангелы — потрясающие певцы, наполняющие залы Нирваны благочестивыми песнопениями и священными гимнами. 
-        Они появляются из душ талантливых бардов и прочих исполнителей. Хотя хоральные ангелы и сторонятся конфликтов, порой 
-        они осмеливаются посетить мир смертных чтобы донести добрые знамения и благие вести. Хоральные ангелы как правило служат 
-        богине Шелин, но они также могут служить другим добрым божествам и светозарным владыкам.</p>
+    <!-- БАЛИСС (ангел-исповедник) -->
+    <div class="creature-card" data-id="balisse">
+        <div class="card-header">
+            <div class="title-group"><div class="creature-title">Балисс (Ангел-исповедник)</div><div class="creature-level">Существо 8</div></div>
+            <div class="toggle-icon">▼</div>
         </div>
-        <div class="ability-tags">
-            <span class="tag">[НД]</span>
-            <span class="tag">[Маленькое]</span>
-            <span class="tag">[Ангел]</span>
-            <span class="tag">[Небожитель]</span>
-        </div>
-
-        <div class="abilities-container">
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Характеристики</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Восприятие:</b> +14; ночное зрение</div>
-                    <div class="ability-info"><b>Языки:</b> Небесный, Драконий, Инфернальный; языки (tongues)</div>
-                    <div class="ability-info"><b>Навыки:</b> Акробатика +12, Дипломатия +15, Выступление +17, Религия +14</div>
-                    <div class="ability-info"><b>Характеристики:</b> Сил +1, Лвк +4, Вын +2, Инт +3, Мдр +4, Хар +5</div>
-                    <div class="divider"></div>
-                    <div class="ability-info"><b>КБ:</b> 24</div>
-                    <div class="ability-info"><b>ПЗ:</b> 100</div>
-                    <div class="ability-info"><b>Стойкость:</b> +10</div>
-                    <div class="ability-info"><b>Рефлексы:</b> +14</div>
-                    <div class="ability-info"><b>Воля:</b> +16; статусный бонус +1 против магии</div>
-                    <div class="ability-info"><b>Уязвимость:</b> зло 5</div>
-                    <div class="ability-info"><b>Сопротивление:</b> звук 5</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Аура гармонии</div>
-                    <div class="ability-level">Аура 20 футов</div>
-                </div>
-                <div class="ability-description">
-                    (аура, сакральная, эвокация, звук) 20 футов.
-                </div>
-                <div class="option-block">
-                    <div class="option-title">Союзники в области:</div>
-                    <p>Получают статусный бонус +2 к урону от звука и статусный бонус +1 к КБ и всем спасброскам против эффектов с атрибутом «слух».</p>
-                </div>
-                <div class="option-block">
-                    <div class="option-title">Противники в области:</div>
-                    <p>Получают статусный штраф –2 к урону от звука и статусный штраф –1 к КБ и всем спасброскам против эффектов с атрибутами «звук» и «слух».</p>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Оглушающая ария</div>
-                </div>
-                <div class="ability-description">
-                    При критическом попадании пронзающим гимном, цель становится оглушена (deafened) на 1 минуту.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Гармонизация [одно действие]</div>
-                </div>
-                <div class="ability-description">
-                    Хоральный ангел распространяет свою гармонию на другого хорального ангела в своей ауре гармонии.
-                </div>
-                <div class="option-block">
-                    <div class="option-title">Эффект:</div>
-                    <p>В свой следующий ход союзник может сотворить спокойствие (calm emotions) или героизм (heroism) вместо своего заклинания звуковой взрыв (sound burst) 3-го круга или усилить свой звуковой взрыв на 1 круг.</p>
-                </div>
-                <div class="option-block">
-                    <div class="option-title">Групповой эффект:</div>
-                    <p>Если пять ангелов используют Гармонизацию на одного и того же союзника, тот может сотворить божественный приговор (divine decree) вместо звукового взрыва.</p>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Скорость</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Наземная:</b> 30 футов</div>
-                    <div class="ability-info"><b>Полёт:</b> 40 футов</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Ближний бой [одно действие]</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Атака:</b> кулак +14 (проворное, фехтовальное, добро, магическое)</div>
-                    <div class="ability-info"><b>Урон:</b> <span class="damage">3d6+1</span> дробящий + <span class="damage">1d6</span> добрый</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Дальний бой [одно действие]</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Атака:</b> пронзающий гимн +17 (добро, магическое, дистанция 90 футов, звук)</div>
-                    <div class="ability-info"><b>Урон:</b> <span class="damage">4d6</span> звук + <span class="damage">1d6</span> добрый и Оглушающая ария</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Сакральные врождённые заклинания (СЛ 23)</div>
-                </div>
-                <div class="ability-details">
-                    <ul class="spells-list">
-                        <li><b>5-й:</b> языки (tongues) (постоянное)</li>
-                        <li><b>3-й:</b> исцеление (heal), снять проклятие (remove curse), удалить болезнь (remove disease), убрать страх (remove fear) (произвольное), звуковой взрыв (sound burst)</li>
-                        <li><b>2-й:</b> невидимость (invisibility) (произвольное, только на себя), звуковой взрыв (sound burst) (произвольное)</li>
-                        <li><b>1-й:</b> контрвыступление (counter performance) (произвольное)</li>
-                        <li><b>Заговоры (3-й):</b> призрачный звук (ghost sound), пробудить способности (inspire competence), пробудить отвагу (inspire courage)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Сакральные ритуалы (СЛ 23)</div>
-                </div>
-                <div class="ability-description">
-                    ангел-вестник (angelic messenger)
-                </div>
+        <div class="card-body">
+            <div class="explanation-block"><p class="subtitle">Балиссы помогают смертным с моральными дилеммами, направляя к собственным решениям. Часто образуются из душ искуплённых грешников. Служат Саренрэй и другим добрым божествам.</p></div>
+            <div class="ability-tags"><span class="tag">[НД]</span><span class="tag">[Среднее]</span><span class="tag">[Ангел]</span><span class="tag">[Небожитель]</span></div>
+            <div class="abilities-container">
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Аура исповедника (20 футов)</div></div><div class="ability-description">Область истины (zone of truth, СЛ 23). Существа могут честно выражать противоречивые чувства.</div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Пылающий скимитар</div></div><div class="ability-details"><div class="ability-info"><b>Атака:</b> +20, урон <span class="damage">2d6+8</span> режущий + <span class="damage">1d6</span> огонь + <span class="damage">1d6</span> добрый.</div></div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Клеймо нераскаявшихся (1/день)</div></div><div class="ability-description">Злое существо получает штраф –1 к КБ/спасброскам, снижение сопротивлений и уязвимость 2 к добру. Спасбросок Воли СЛ 26: успех — 1 раунд, провал — 1 день.</div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Ангел-проводник</div></div><div class="ability-description">Будучи невидимым, может слиться с не-злым смертным, общаться и появляться в виде маленького ангела.</div></div>
             </div>
         </div>
     </div>
 
-    <!-- Третье существо: БАЛИСС -->
-    <div class="creature-container">
-        <h1 class="creature-title">Балисс (Ангел-исповедник)</h1>
-        <div class="creature-level">Существо 8</div>
-        <div class="explanation-block">
-
-        <p class="subtitle">Балиссы или ангелы-исповедники, стремятся помочь смертным, столкнувшимся с моральными дилеммами или кризисом веры. 
-        Балиссы предпочитают направлять людей к их собственным решениям, а не требовать повиновения высшему делу, поскольку 
-        внутренняя вера ещё сильнее слепого повиновения. Хотя большинство балиссов честны по своей природе, они используют свою 
-        способность ангела-хранителя, чтобы казаться менее пугающими и уменьшить вероятность того, что смертный просто согласится 
-        с мнением очевидно божественного существа. Балиссы часто образуются из душ тех, кто совершал злые деяния, но добился 
-        искупления. Многие служат богине Саренрэй, но они могут служить и другим добрым божествам и светозарным владыкам.</p>
-</div>
-        <div class="ability-tags">
-            <span class="tag">[НД]</span>
-            <span class="tag">[Среднее]</span>
-            <span class="tag">[Ангел]</span>
-            <span class="tag">[Небожитель]</span>
+    <!-- МОВАНИЧЕСКИЙ ДЭВА -->
+    <div class="creature-card" data-id="movanic">
+        <div class="card-header">
+            <div class="title-group"><div class="creature-title">Мованический дэва (Ангел-хранитель)</div><div class="creature-level">Существо 10</div></div>
+            <div class="toggle-icon">▼</div>
         </div>
-
-        <div class="abilities-container">
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Характеристики</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Восприятие:</b> +18 (+20 против иллюзий и лжи); ночное зрение</div>
-                    <div class="ability-info"><b>Языки:</b> Небесный, Драконий, Инфернальный; языки (tongues)</div>
-                    <div class="ability-info"><b>Навыки:</b> Акробатика +14, Дипломатия +17, Религия +18</div>
-                    <div class="ability-info"><b>Характеристики:</b> Сил +5, Лвк +2, Вын +4, Инт +1, Мдр +6, Хар +5</div>
-                    <div class="divider"></div>
-                    <div class="ability-info"><b>Предметы:</b> скимитар мощи +1</div>
-                    <div class="ability-info"><b>КБ:</b> 26</div>
-                    <div class="ability-info"><b>ПЗ:</b> 145</div>
-                    <div class="ability-info"><b>Стойкость:</b> +16</div>
-                    <div class="ability-info"><b>Рефлексы:</b> +12</div>
-                    <div class="ability-info"><b>Воля:</b> +18; статусный бонус +1 против магии</div>
-                    <div class="ability-info"><b>Уязвимость:</b> зло 10</div>
-                    <div class="ability-info"><b>Сопротивление:</b> огонь 15</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Аура исповедника</div>
-                    <div class="ability-level">Аура 20 футов</div>
-                </div>
-                <div class="ability-description">
-                    (аура, сакральная, очарование, ментальный) 20 футов.
-                </div>
-                <div class="ability-effect">
-                    Существа в ауре балисса подвергаются действию области истины (zone of truth) (СЛ 23). Если существа предпочитают честно выражать свои противоречивые чувства, аура облегчает формулировку этих чувств.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Скорость</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Наземная:</b> 30 футов</div>
-                    <div class="ability-info"><b>Полёт:</b> 40 футов</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Ближний бой [одно действие]</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Атака:</b> пылающий скимитар +20 (огонь, напор, добро, магическое, сметающее)</div>
-                    <div class="ability-info"><b>Урон:</b> <span class="damage">2d6+8</span> режущий + <span class="damage">1d6</span> огонь + <span class="damage">1d6</span> добрый</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Сакральные врождённые заклинания (СЛ 26)</div>
-                </div>
-                <div class="ability-details">
-                    <ul class="spells-list">
-                        <li><b>4-й:</b> божественный гнев (divine wrath), исцеление (heal), паралич (paralyze), снять проклятие (remove curse), удалить болезнь (remove disease)</li>
-                        <li><b>3-й:</b> убрать страх (remove fear) (произвольное)</li>
-                        <li><b>2-й:</b> невидимость (invisibility) (произвольное, только на себя)</li>
-                        <li><b>1-й:</b> обнаружение мировоззрения (detect alignment) (произвольное, только зло)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Сакральные ритуалы (СЛ 26)</div>
-                </div>
-                <div class="ability-description">
-                    ангел-вестник (angelic messenger), искупление (atone), гейс (geas)
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Клеймо нераскаявшихся [два действия]</div>
-                    <div class="ability-level">Один раз в день</div>
-                </div>
-                <div class="ability-description">
-                    (проклятие, сакральная, эвокация) Балисс заключает, что злое существо в его ауре неисправимо (после неудачной попытки убедить его раскаяться).
-                </div>
-                <div class="ability-effect">
-                    Цель получает статусный штраф –1 к КБ и спасброскам, снижение всех Сопротивлений на 2 и Уязвимость 2 к доброму урону.
-                </div>
-                <div class="option-block">
-                    <div class="option-title">Длительность (спасбросок Воли СЛ 26):</div>
-                    <p><b>Успех:</b> 1 раунд</p>
-                    <p><b>Провал:</b> 1 день</p>
-                    <p><b>Критический провал:</b> неограниченно</p>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Пламенное вооружение</div>
-                </div>
-                <div class="ability-description">
-                    (сакральная, эвокация) Любое оружие в руках балисса получает эффект пылающей руны свойств.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Ангел-проводник [одно действие]</div>
-                </div>
-                <div class="ability-description">
-                    (сакральная, трансмутация) Будучи невидимым, балисс может духовно слиться с телом любого не-злого смертного. Он не может использовать свои заклинания и способности, кроме взаимодействия со смертным.
-                </div>
-                <div class="ability-effect">
-                    Может принимать видимую только смертному форму (например, маленького ангела на плече) и общаться бестелесным голосом.
-                </div>
-            </div>
-
-            <div class="info-note">
-                <h3>Дополнительная информация</h3>
-                
-                <div class="option-block">
-                    <div class="option-title">Сокровища ангелов</div>
-                    <p>Многие ангелы носят изысканные доспехи и магическое оружие. Они ценят красоту одежды и произведений искусства.</p>
-                </div>
-                
-                <div class="option-block">
-                    <div class="option-title">Прочие ангелы</div>
-                    <p>Самыми могущественными являются соляры, но на Нирване обитает множество других ангелов — красивых гуманоидов с несколькими парами крыльев.</p>
-                </div>
+        <div class="card-body">
+            <div class="explanation-block"><p class="subtitle">Управляют потоком душ добрых существ от рождения до смерти. Защищают жизненную силу и могут пробуждать разум у животных, увеличивая поток добра.</p></div>
+            <div class="ability-tags"><span class="tag">[НД]</span><span class="tag">[Среднее]</span><span class="tag">[Ангел]</span><span class="tag">[Небожитель]</span></div>
+            <div class="abilities-container">
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Аура жизненной силы</div></div><div class="ability-description">Союзники получают +1 ко всем спасброскам, сопротивление 10 позитивной/негативной энергии, невосприимчивость к опасностям планов. Животные 12-го уровня и ниже не нападают.</div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Пламенный полуторный меч</div></div><div class="ability-details"><div class="ability-info"><b>Атака:</b> +23, урон <span class="damage">2d8+9</span> режущий + <span class="damage">1d6</span> огонь + <span class="damage">1d6</span> добрый.</div></div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Рассеивающее поле (1/день)</div></div><div class="ability-description">Противодействует магическим эффектам на союзниках в ауре (модификатор +19, круг 4).</div></div>
             </div>
         </div>
     </div>
 
-    <!-- Четвертое существо: МОВАНИЧЕСКИЙ ДЭВА -->
-    <div class="creature-container">
-        <h1 class="creature-title">Мованический дэва (Ангел-хранитель)</h1>
-        <div class="creature-level">Существо 10</div>
-        <div class="explanation-block">
-
-        <p class="subtitle">Мованические дэвы управляют потоком душ добрых созданий через цикл жизни и смерти, с момента рождения существа до дня его смерти. Эти ангелы рождаются из душ стойких наставников и защитников и имеют особую связь с жизненной сущностью существа — его жизненной силой. Мованические дэвы больше всего заботятся о том, чтобы направлять и защищать добрых существ во время их смертных жизней, поэтому, как только душа переходит в Реку Душ, мованический дэва оставляет свою защиту ангелам душ, или монадическим дэвам. В рамках своего управления добрыми созданиями мованические дэвы могут пробудить в животных уровень разумности, позволяющий им также стать добрыми и доброжелательными, тем самым увеличивая поток добра в загробную жизнь. Они также проводят время, патрулируя Планы Положительной и Негативной энергии, стремясь сдержать серьёзные угрозы для всего живого.</p>
-</div>
-        <div class="ability-tags">
-            <span class="tag">[НД]</span>
-            <span class="tag">[Среднее]</span>
-            <span class="tag">[Ангел]</span>
-            <span class="tag">[Небожитель]</span>
+    <!-- МОНАДИЧЕСКИЙ ДЭВА -->
+    <div class="creature-card" data-id="monadic">
+        <div class="card-header">
+            <div class="title-group"><div class="creature-title">Монадический дэва (Ангел душ)</div><div class="creature-level">Существо 12</div></div>
+            <div class="toggle-icon">▼</div>
         </div>
-
-        <div class="abilities-container">
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Характеристики</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Восприятие:</b> +22; ночное зрение</div>
-                    <div class="ability-info"><b>Языки:</b> Небесный, Драконий, Инфернальный; языки</div>
-                    <div class="ability-info"><b>Навыки:</b> Атлетика +20, Дипломатия +22, Запугивание +22, Природа +22, Религия +19, Скрытность +17, Выживание +17</div>
-                    <div class="ability-info"><b>Характеристики:</b> Сил +6, Лвк +4, Вын +4, Инт +4, Мдр +5, Хар +5</div>
-                    <div class="divider"></div>
-                    <div class="ability-info"><b>Предметы:</b> полуторный меч мощи +1</div>
-                    <div class="ability-info"><b>КБ:</b> 30</div>
-                    <div class="ability-info"><b>ПЗ:</b> 195</div>
-                    <div class="ability-info"><b>Стойкость:</b> +21</div>
-                    <div class="ability-info"><b>Рефлексы:</b> +17</div>
-                    <div class="ability-info"><b>Воля:</b> +19; бонус +1 ко всем спасброскам против магии</div>
-                    <div class="ability-info"><b>Невосприимчивость:</b> негативная энергия</div>
-                    <div class="ability-info"><b>Уязвимость:</b> зло 10</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Аура жизненной силы</div>
-                    <div class="ability-level">Аура 20 футов</div>
-                </div>
-                <div class="ability-description">
-                    (ограждение, аура, сакральная) 20 футов.
-                </div>
-                <div class="ability-effect">
-                    Союзники в ауре мованического дэва получают статусный бонус +1 ко всем спасброскам, Сопротивление 10 к позитивному и негативному урону и не подвержены воздействию эффектов Планов с атрибутами «позитивный» и «негативный». Животные 12-го уровня или ниже, находясь в ауре мованического дэва не нападают на него или его союзников, если ими не управляют или иным образом не заставляют атаковать.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Скорость</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Наземная:</b> 30 футов</div>
-                    <div class="ability-info"><b>Полёт:</b> 40 футов</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Ближний бой</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Атака:</b> пылающий полуторный меч +23 (доброе, магическое, двуручное d12)</div>
-                    <div class="ability-info"><b>Урон:</b> <span class="damage">2d8+9</span> режущий + <span class="damage">1d6</span> огонь + <span class="damage">1d6</span> добрый</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Сакральные врождённые заклинания (СЛ 29)</div>
-                </div>
-                <div class="ability-details">
-                    <ul class="spells-list">
-                        <li><b>5-й:</b> божественный гнев, снять проклятие, удалить болезнь, убрать страх</li>
-                        <li><b>4-й:</b> создание пищи, исцеление (х3)</li>
-                        <li><b>2-й:</b> невидимость (произвольное, только на себя)</li>
-                        <li><b>1-й:</b> обнаружение мировоззрения (произвольное, только зло)</li>
-                        <li><b>Постоянные (5-й):</b> языки</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Ритуалы (СЛ 29)</div>
-                </div>
-                <div class="ability-description">
-                    ангел-вестник, пробуждение животного
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Рассеивающее поле</div>
-                    <div class="ability-level">Один раз в день</div>
-                </div>
-                <div class="ability-description">
-                    (сакральная, трансмутация) Мованический дэва пытается раскрыть нежелательные магические эффекты действующие на союзников, находящихся в пределах его ауры жизненной силы, чтобы защитить их от злонамеренных сил.
-                </div>
-                <div class="ability-effect">
-                    Мованический дэва пытается противодействовать стольким эффектам заклинаний, влияющих на союзников в этой области, сколько пожелает, с модификатором противодействия +19 и кругом противодействия 4, совершая бросок один раз для выбранных эффектов.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Пламенное вооружение</div>
-                </div>
-                <div class="ability-description">
-                    (сакральная, трансмутация) Когда мованический дэва владеет оружием, это оружие приобретает эффект пылающей руны.
-                </div>
+        <div class="card-body">
+            <div class="explanation-block"><p class="subtitle">Следят за душами умерших, направляя их через Реку Душ. Защищают от злых сил и обладают способностью общаться с духами.</p></div>
+            <div class="ability-tags"><span class="tag">[НД]</span><span class="tag">[Среднее]</span><span class="tag">[Ангел]</span><span class="tag">[Небожитель]</span></div>
+            <div class="abilities-container">
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Духовный страж (аура 20 футов)</div></div><div class="ability-description">Союзники получают статусный бонус +2 к спасброскам против смертельных эффектов и воздействий на душу.</div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Обличение Души</div></div><div class="ability-description">Не-добрая цель или нежить в радиусе 40 футов получает <span class="damage">5d10</span> доброго урона, Стойкость СЛ 32. Шок 1–4 в зависимости от провала.</div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Сильный Удар</div></div><div class="ability-description">При повторном попадании булавой за ход добавляет <span class="damage">2d12</span> силового урона.</div></div>
             </div>
         </div>
     </div>
 
-    <!-- Монадический Дэва -->
-    <div class="creature-container">
-        <h1 class="creature-title">Монадический Дэва</h1>
-        <div class="creature-level">Существо 12</div>
-        
-        <p class="subtitle">?????????</p>
-
-        <div class="ability-tags">
-            <span class="tag">[НД]</span>
-            <span class="tag">[Среднее]</span>
-            <span class="tag">[Ангел]</span>
-            <span class="tag">[Небожитель]</span>
+    <!-- АСТРАЛЬНЫЙ ДЭВА -->
+    <div class="creature-card" data-id="astral">
+        <div class="card-header">
+            <div class="title-group"><div class="creature-title">Астральный дэва (Ангел-посол)</div><div class="creature-level">Существо 14</div></div>
+            <div class="toggle-icon">▼</div>
         </div>
-
-        <div class="abilities-container">
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Характеристики</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Восприятие:</b> +25; ночное зрение</div>
-                    <div class="ability-info"><b>Языки:</b> Небесный, Драконий, Инфернальный; языки</div>
-                    <div class="ability-info"><b>Навыки:</b> Мистика +25, Дипломатия +24, Запугивание +22, Оккультизм +20, Религия +25, Выживание +22</div>
-                    <div class="ability-info"><b>Характеристики:</b> Сил +7, Лвк +4, Вын +5, Инт +4, Мдр +4, Хар +5</div>
-                    <div class="divider"></div>
-                    <div class="ability-info"><b>Предметы:</b> булава мощи +1</div>
-                    <div class="ability-info"><b>КБ:</b> 33</div>
-                    <div class="ability-info"><b>ПЗ:</b> 245</div>
-                    <div class="ability-info"><b>Стойкость:</b> +24</div>
-                    <div class="ability-info"><b>Рефлексы:</b> +21</div>
-                    <div class="ability-info"><b>Воля:</b> +20; статусный бонус +1 для всех спасбросков против магии</div>
-                    <div class="ability-info"><b>Невосприимчивость:</b> смертельные эффекты</div>
-                    <div class="ability-info"><b>Уязвимость:</b> зло 10</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Духовный Страж</div>
-                    <div class="ability-level">Аура 20 футов</div>
-                </div>
-                <div class="ability-description">
-                    (ограждение, аура, сакральная) 20 футов.
-                </div>
-                <div class="ability-effect">
-                    Союзники в ауре получают статусный бонус +2 к спасброскам против смертельных эффектов и эффектов, нацеленных на их души или манипулирующих ими.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Скорость</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Наземная:</b> 30 футов</div>
-                    <div class="ability-info"><b>Полёт:</b> 60 футов</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Ближний бой [одно действие]</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Атака:</b> священная булава +28 (доброе, магическое, толкающее)</div>
-                    <div class="ability-info"><b>Урон:</b> <span class="damage">2d6+15</span> дробящий + <span class="damage">1d6</span> силовой + <span class="damage">1d6</span> добрый плюс Сильный Удар</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Сакральные врождённые заклинания (СЛ 31)</div>
-                </div>
-                <div class="ability-details">
-                    <ul class="spells-list">
-                        <li><b>6‑й:</b> божественный гнев (divine wrath), исцеление (heal), паралич (paralyze), снять проклятие (remove curse), удалить болезнь (remove disease)</li>
-                        <li><b>5‑й:</b> создание (creation), убрать страх (remove fear)</li>
-                        <li><b>4‑й:</b> очарование (charm)</li>
-                        <li><b>2‑й:</b> невидимость (invisibility) (произвольное, только на себя)</li>
-                        <li><b>1‑й:</b> обнаружение мировоззрения (detect alignment) (произвольное, только зло)</li>
-                        <li><b>Постоянные (5‑й):</b> языки (tongues)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Сакральные ритуалы (СЛ 32)</div>
-                </div>
-                <div class="ability-description">
-                    ангел-вестник (angelic messenger)
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Священное Вооружение</div>
-                </div>
-                <div class="ability-description">
-                    (сакральная, эвокация) Любое оружие получает эффект святой руны свойств, пока им владеет монадический дэва.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Обличение Души [два действия]</div>
-                </div>
-                <div class="ability-description">
-                    (слух, сакральная, очарование, добро, недееспособность) Монадический дэва произносит слово обличения, чтобы заставить душу существа отшатнуться от своих грехов или нежить отвергнуть своё бездушное существование.
-                </div>
-                <div class="ability-effect">
-                    Одна не-добрая живая цель или нежить в радиусе 40 футов получает <span class="damage">5d10</span> доброго урона и должна выполнить спасбросок Стойкости со СЛ 32. Независимо от результата, цель затем временно невосприимчива к этой способности в течение 10 минут.
-                </div>
-                <div class="option-block">
-                    <div class="option-title">Длительность (спасбросок Стойкости СЛ 32):</div>
-                    <p><b>Критический успех:</b> Цель не затронута</p>
-                    <p><b>Успех:</b> Цель получает половину урона и в шоке 1</p>
-                    <p><b>Провал:</b> Цель получает полный урон и в шоке 2</p>
-                    <p><b>Критический провал:</b> Цель получает двойной урон и в шоке 4</p>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Сильный Удар</div>
-                </div>
-                <div class="ability-description">
-                    (сакральная, эвокация, сила) Когда монадический дэва поражает цель во второй раз во время своего хода своей булавой, он наносит дополнительно <span class="damage">2d12</span> силового урона, поскольку его оружие мерцает и искрится от силы.
-                </div>
+        <div class="card-body">
+            <div class="explanation-block"><p class="subtitle">Элитные вестники небес, доставляют сообщения, проводят разведку, обучают могущественных смертных. Могут иметь черты божества-создателя.</p></div>
+            <div class="ability-tags"><span class="tag">[НД]</span><span class="tag">[Среднее]</span><span class="tag">[Ангел]</span><span class="tag">[Небожитель]</span></div>
+            <div class="abilities-container">
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Аура путешественника</div></div><div class="ability-description">Защита от опасной среды любых планов. Дэва не считается застигнутым врасплох для существ в ауре.</div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Святой боевой молот</div></div><div class="ability-details"><div class="ability-info"><b>Атака:</b> +30, урон <span class="damage">2d8+22</span> дробящий + <span class="damage">1d6</span> добрый.</div></div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Шокирующий удар</div></div><div class="ability-description">При попадании оружием второй раз за ход — цель Стойкость СЛ 34 либо шок 1 (крит. провал шок 2).</div></div>
             </div>
         </div>
     </div>
 
-
-    <!-- Пятое существо: АСТРАЛЬНЫЙ ДЭВА -->
-    <div class="creature-container">
-        <h1 class="creature-title">Астральный дэва (Ангел-посол)</h1>
-        <div class="creature-level">Существо 14</div>
-        <div class="explanation-block">
-
-        <p class="subtitle">Астральные дэва — это элитные вестники и послы небесных царств, служащие божествам и небесным армиям, доставляя сообщения, проводя разведку и оказывая поддержку тем, кто нуждается в помощи. Они следят за планарными путешественниками и берут могущественных смертных под своё крыло, чтобы обучать их. Астральные дэва переносят свитки с важными сообщениями и другими секретами Небес. Астральные дэва могут спонтанно формируются из душ выдающихся смертных с добрым мировоззрением, но иногда намеренно создаются из таких душ божествами или полубогами. Во втором случае астральные дэва часто имеют физические черты, отображающие их тесную связь с этим божеством. Например, у астрального дэва, созданного Саренрэй, могут быть огненные волосы, в то время как созданный Торагом дэва может быть больше похож на дварфа, а у созданного Дезной вместо пернатых крыльев могут быть крылья бабочки. Как правило, дэва, созданные принципиально-добрыми или хаотично-добрыми божествами, разделяют мировоззрение своих создателей.</p>
-
-        <div class="ability-tags">
-            <span class="tag">[НД]</span>
-            <span class="tag">[Среднее]</span>
-            <span class="tag">[Ангел]</span>
-            <span class="tag">[Небожитель]</span>
-        </div>
-
-        <div class="abilities-container">
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Характеристики</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Восприятие:</b> +26; ночное зрение</div>
-                    <div class="ability-info"><b>Языки:</b> Небесный, Драконий, Инфернальный; языки (tongues)</div>
-                    <div class="ability-info"><b>Навыки:</b> Акробатика +24, Дипломатия +26, Запугивание +28, Религия +24</div>
-                    <div class="ability-info"><b>Характеристики:</b> Сил +8, Лвк +4, Вын +5, Инт +4, Мдр +4, Хар +6</div>
-                    <div class="divider"></div>
-                    <div class="ability-info"><b>Предметы:</b> боевой молот мощи +2</div>
-                    <div class="ability-info"><b>КБ:</b> 36</div>
-                    <div class="ability-info"><b>ПЗ:</b> 285</div>
-                    <div class="ability-info"><b>Стойкость:</b> +27</div>
-                    <div class="ability-info"><b>Рефлексы:</b> +26</div>
-                    <div class="ability-info"><b>Воля:</b> +22; статусный бонус +1 ко всем спасброскам против магии</div>
-                    <div class="ability-info"><b>Уязвимость:</b> зло 15</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Аура путешественника</div>
-                    <div class="ability-level">Аура 20 футов</div>
-                </div>
-                <div class="ability-description">
-                    (аура, ограждение, сакральная) 20 футов.
-                </div>
-                <div class="ability-effect">
-                    Существа в ауре астрального дэва защищены от воздействия окружающей среды с любого Плана, в том числе от сильных и экстремальных жары и холода, а также более экзотических опасностей. Астральный дэва никогда не считается застигнутым врасплох (flat-footed) для существ в своей ауре.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Помилование вестника</div>
-                </div>
-                <div class="ability-description">
-                    (ограждение, сакральная) Астральный дэва, у которого есть недоставленное сообщение, постоянно защищён эффектом святилища (sanctuary) (СЛ 32). Если дэва прерывает эффект святилища, он возобновляется, если дэва прекращает враждебные действия на 10 минут.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Скорость</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Наземная:</b> 40 футов</div>
-                    <div class="ability-info"><b>Полёт:</b> 75 футов</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Ближний бой</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Атака:</b> святой боевой молот +30 (добро, магическое, толкающее)</div>
-                    <div class="ability-info"><b>Урон:</b> <span class="damage">2d8+22</span> дробящий + <span class="damage">1d6</span> добрый</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Сакральные врождённые заклинания (СЛ 36)</div>
-                </div>
-                <div class="ability-details">
-                    <ul class="spells-list">
-                        <li><b>7-й:</b> стена клинков (blade barrier), божественный приговор (divine decree), божественный гнев (divine wrath), исцеление (heal), снять проклятие (remove curse), удалить болезнь (remove disease), убрать страх (remove fear)</li>
-                        <li><b>4-й:</b> распознать ложь (discern lies) (произвольное)</li>
-                        <li><b>2-й:</b> невидимость (invisibility) (произвольное, только на себя)</li>
-                        <li><b>1-й:</b> обнаружение мировоззрения (detect alignment) (произвольное, только зло)</li>
-                        <li><b>Заговоры (7-й):</b> свет (light)</li>
-                        <li><b>Постоянное (5-й):</b> языки (tongues)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Сакральные ритуалы (СЛ 36)</div>
-                </div>
-                <div class="ability-description">
-                    ангел-вестник (angelic messenger)
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Божественное вооружение</div>
-                </div>
-                <div class="ability-description">
-                    (сакральная, эвокация) Любое оружие в руках астрального дэва получает эффект святой руны свойств.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Шокирующий удар</div>
-                </div>
-                <div class="ability-description">
-                    Условия: Астральный дэва попал по врагу Ударом (Strike) оружия ранее в этом ходу. Эффект: Астральный дэва совершает Удар оружием по противнику.
-                </div>
-                <div class="ability-effect">
-                    При успехе, цель должна совершить спасбросок Стойкости со СЛ 34 или впасть в состояние шока (stunned) 1. При критическом провале, враг также в шоке (stunned) 2.
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+    <!-- ************************** АРХОНЫ ************************** -->
     <div class="main-title">Архоны</div>
 
-    <!-- Шестое существо: АРХОН-СВЕТОЧ -->
-    <div class="creature-container">
-        <h1 class="creature-title">Архон-светоч</h1>
-        <div class="creature-level">Существо 1</div>
-        <div class="explanation-block">
+    <!-- АРХОН-СВЕТОЧ -->
+    <div class="creature-card" data-id="lantern">
+        <div class="card-header">
+            <div class="title-group"><div class="creature-title">Архон-светоч</div><div class="creature-level">Существо 1</div></div>
+            <div class="toggle-icon">▼</div>
+        </div>
+        <div class="card-body">
+            <div class="explanation-block"><p class="subtitle">Дружелюбные существа из живого света — воплощение надежды. Могут объединяться в гештальт — пылающего воина.</p></div>
+            <div class="ability-tags"><span class="tag">[ПД]</span><span class="tag">[Маленькое]</span><span class="tag">[Архон]</span><span class="tag">[Небожитель]</span></div>
+            <div class="abilities-container">
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Луч света</div></div><div class="ability-details"><div class="ability-info"><b>Атака:</b> +8, урон <span class="damage">1d4</span> огонь + <span class="damage">1d4</span> добрый.</div></div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Гештальт</div></div><div class="ability-description">Девять светочей сливаются на 7 раундов в воина с характеристиками архона-легионера, лучом +18 (3d4 огонь+3d4 добрый) и бонусом Светоча надежды +3.</div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Светоч надежды</div></div><div class="ability-description">Союзники в радиусе 30 футов получают +1 к урону и спасброскам против crushing despair.</div></div>
+            </div>
+        </div>
+    </div>
 
-        <p class="subtitle">Архоны-светочи дружелюбны, любопытны и всегда оптимистичны. Они олицетворяют добродетель надежды. Они состоят из живого света, которому была придана телесная форма, и служат маяками, указывающими смертным путь в их самые мрачные моменты, направляя их на путь праведности. Их светящиеся тела могут в одно мгновение мерцать с нежностью свечи, а в другое вспыхнуть подобно факелу. Архоны-светочи могут управлять всеми аспектами своего свечения с той же лёгкостью, с какой другие существа управляют выражениями своих лиц, изменяя цвет, мигая, затухая и вспыхивая в соответствие с их действиями и словами. Архоны-светочи бодры и приветливы в разговоре, но также становятся впечатляюще стойкими и мобильными войсками поддержки во времена конфликтов, и способны объединяться в могущественных воинов света — гештальтов.</p>
+    <!-- РОГАТЫЙ АРХОН -->
+    <div class="creature-card" data-id="horned">
+        <div class="card-header"><div class="title-group"><div class="creature-title">Рогатый архон</div><div class="creature-level">Существо 4</div></div><div class="toggle-icon">▼</div></div>
+        <div class="card-body">
+            <div class="explanation-block"><p class="subtitle">Скрытные стражи с головами оленей. Патрулируют дикие земли, помогают охотникам и детям, прогоняют зло.</p></div>
+            <div class="ability-tags"><span class="tag">[ПД]</span><span class="tag">[Среднее]</span><span class="tag">[Архон]</span><span class="tag">[Небожитель]</span></div>
+            <div class="abilities-container"><div class="ability-card"><div class="ability-header"><div class="ability-title">Грозный Страж (аура 30 футов)</div></div><div class="ability-description">Враги получают штраф –1 к атакам/урону против других целей (СЛ 19). При критическом провале не могут враждебно действовать против других.</div></div>
+            <div class="ability-card"><div class="ability-header"><div class="ability-title">Прикосновение Милосердия</div></div><div class="ability-description">Передаёт до 30 ПЗ другому существу.</div></div></div>
+        </div>
+    </div>
+
+    <!-- АРХОН-ГОНЧАЯ -->
+    <div class="creature-card" data-id="hound">
+        <div class="card-header"><div class="title-group"><div class="creature-title">Архон-гончая</div><div class="creature-level">Существо 4</div></div><div class="toggle-icon">▼</div></div>
+        <div class="card-body">
+            <div class="explanation-block"><p class="subtitle">Воплощение усердия, надёжные солдаты Небес. Защищают святые места и стратегические позиции.</p></div>
+            <div class="ability-tags"><span class="tag">[ПД]</span><span class="tag">[Среднее]</span><span class="tag">[Архон]</span><span class="tag">[Небожитель]</span></div>
+            <div class="abilities-container"><div class="ability-card"><div class="ability-header"><div class="ability-title">Усердное нападение</div></div><div class="ability-description">Две атаки (двуручный меч +14, челюсти +14) без увеличения штрафа до окончания атак.</div></div></div>
+        </div>
+    </div>
+
+    <!-- АРХОН-ЛЕГИОНЕР -->
+    <div class="creature-card" data-id="legionnaire">
+        <div class="card-header"><div class="title-group"><div class="creature-title">Архон-легионер</div><div class="creature-level">Существо 7</div></div><div class="toggle-icon">▼</div></div>
+        <div class="card-body">
+            <div class="explanation-block"><p class="subtitle">Дипломаты архонов, предпочитающие компромиссы. В бою владеют пламенем справедливости — метательным мечом.</p></div>
+            <div class="ability-tags"><span class="tag">[ПД]</span><span class="tag">[Среднее]</span><span class="tag">[Архон]</span><span class="tag">[Небожитель]</span></div>
+            <div class="abilities-container"><div class="ability-card"><div class="ability-header"><div class="ability-title">Пламя справедливости</div></div><div class="ability-description">Ближняя/дальняя атака +18, урон <span class="damage">2d10+5</span> режущий + <span class="damage">1d6</span> огонь + <span class="damage">1d6</span> добрый. Крит: максимальный огненный урон + <span class="damage">1d10</span> продолжит. огонь.</div></div></div>
+        </div>
+    </div>
+
+    <!-- АРХОН-ЩИТОНОСЕЦ -->
+    <div class="creature-card" data-id="shieldbearer">
+        <div class="card-header"><div class="title-group"><div class="creature-title">Архон-щитоносец</div><div class="creature-level">Существо 10</div></div><div class="toggle-icon">▼</div></div>
+        <div class="card-body">
+            <div class="explanation-block"><p class="subtitle">Обороняют крепости Небес. Руки превращаются в святое копьё и щит. Живой щит всегда поднят, может блокировать урон союзникам.</p></div>
+            <div class="ability-tags"><span class="tag">[ПД]</span><span class="tag">[Крупное]</span><span class="tag">[Архон]</span><span class="tag">[Небожитель]</span></div>
+            <div class="abilities-container"><div class="ability-card"><div class="ability-header"><div class="ability-title">Мужественная рокировка</div></div><div class="ability-description">При использовании dimension door может поменяться местами с союзником, который виден в пределах дистанции.</div></div></div>
+        </div>
+    </div>
+
+    <!-- АРХОН-ГЛАШАТАЙ -->
+    <div class="creature-card" data-id="herald">
+        <div class="card-header"><div class="title-group"><div class="creature-title">Архон-глашатай</div><div class="creature-level">Существо 14</div></div><div class="toggle-icon">▼</div></div>
+        <div class="card-body">
+            <div class="explanation-block"><p class="subtitle">Посланники и рассказчики, воплощение доброты. Предотвращают кровопролитие историями и аллегориями. Трубный звук вселяет трепет во врагов.</p></div>
+            <div class="ability-tags"><span class="tag">[ПД]</span><span class="tag">[Среднее]</span><span class="tag">[Архон]</span><span class="tag">[Небожитель]</span></div>
+            <div class="abilities-container"><div class="ability-card"><div class="ability-header"><div class="ability-title">Трубный звук [два действия]</div></div><div class="ability-description">Не-архоны в радиусе 100 футов Стойкость СЛ 34: успех — flat-footed, провал — stunned 1, крит. провал — парализован 1 раунд.</div></div>
+            <div class="ability-card"><div class="ability-header"><div class="ability-title">Доброе слово</div></div><div class="ability-description">Противодействует эффекту с эмоцией (модификатор +24), даёт +1 к атакам/спасброскам союзнику и себе на 1 раунд.</div></div></div>
+        </div>
+    </div>
 </div>
-        <div class="ability-tags">
-            <span class="tag">[ПД]</span>
-            <span class="tag">[Маленькое]</span>
-            <span class="tag">[Архон]</span>
-            <span class="tag">[Небожитель]</span>
-        </div>
 
-        <div class="abilities-container">
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Характеристики</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Восприятие:</b> +6; ночное зрение</div>
-                    <div class="ability-info"><b>Языки:</b> Небесный, Драконий, Инфернальный</div>
-                    <div class="ability-info"><b>Навыки:</b> Акробатика +8, Дипломатия +6, Религия +6</div>
-                    <div class="ability-info"><b>Характеристики:</b> Сил -5, Лвк +3, Вын +1, Инт -1, Мдр +1, Хар +1</div>
-                    <div class="divider"></div>
-                    <div class="ability-info"><b>КБ:</b> 16</div>
-                    <div class="ability-info"><b>ПЗ:</b> 20</div>
-                    <div class="ability-info"><b>Стойкость:</b> +6</div>
-                    <div class="ability-info"><b>Рефлексы:</b> +10</div>
-                    <div class="ability-info"><b>Воля:</b> +4</div>
-                    <div class="ability-info"><b>Уязвимость:</b> зло 3</div>
-                    <div class="ability-info"><b>Сопротивление:</b> огонь 3</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Удар возмездия</div>
-                </div>
-                <div class="ability-description">
-                    Архон-светоч может также совершить Удар Возмездия (Retributive Strike), используя свой луч света.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Скорость</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Полёт:</b> 40 футов</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Дальний бой</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Атака:</b> луч света +8 (проворное, добро, огонь, магическое, дистанция 30 футов)</div>
-                    <div class="ability-info"><b>Урон:</b> <span class="damage">1d4</span> огонь + <span class="damage">1d4</span> добрый</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Сакральные врождённые заклинания (СЛ 17)</div>
-                </div>
-                <div class="ability-details">
-                    <ul class="spells-list">
-                        <li><b>4-й:</b> чтение знамений (read omens)</li>
-                        <li><b>1-й:</b> обнаружение мировоззрения (detect alignment) (произвольно, только зло), исцеление (heal)</li>
-                        <li><b>Заговоры (1-й):</b> свет (light)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Гештальт</div>
-                </div>
-                <div class="ability-description">
-                    (концентрация, сакральная, трансмутация) Девять архонов-светочей могут сообща использовать эту активность в течении одного раунда после первого, чтобы слиться в форму составного существа на 7 раундов, которое выглядит как пылающий воин света.
-                </div>
-                <div class="ability-effect">
-                    У гештальта все основные параметра — те же, что у архона-легионера (КБ, спасброски, атаки, Навыки, Скорости и т. д.), но заклинания и особые способности у него те же, что у архона-светоча. Кроме того, у него есть дистанционная атака в виде Удара (Strike) лучом света (+18 к атаке, Урон: <span class="damage">3d4</span> огонь и <span class="damage">3d4</span> добрый), а также его бонус от Светоча Надежды (Lantern of Hope) увеличивается до +3. Когда гештальт разъединяется, его оставшиеся ПЗ делятся между архонами-светочами, и если у гештальта в этот момент остаётся меньше 9 ПЗ, часть архонов погибает.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Светоч надежды</div>
-                </div>
-                <div class="ability-description">
-                    (концентрация, сакральная, очарование, ментальный) Архон-светоч светит подобно светочу надежды.
-                </div>
-                <div class="ability-effect">
-                    Союзники с добрым мировоззрением в пределах 30 футов получают статусный бонус +1 к броскам урона и к спасброскам против глубокого отчаяния (crushing despair).
-                </div>
-            </div>
-        </div>
-    </div>
-
-   <!-- Рогатый архон -->
-    <div class="creature-container">
-        <h1 class="creature-title">Рогатый архон</h1>
-        <div class="creature-level">Существо 4</div>
-        <div class="explanation-block">
-
-        <p class="subtitle">
-            Рогатые архоны — скрытные и неутомимые стражи и разведчики, выслеживающие зло в диких землях Внешней Сферы и защищающие небольшие поселения от демонов, дьяволов и ещё чего похуже. Они выглядят как мускулистые люди с головами, рогами и ногами оленя. По приказу своих покровителей, особенно Эрастила, они отправляются на Материальный план, где патрулируют пограничные районы, тайно совершая добро: приводят охотников к еде, помогают потерявшимся детям и прогоняют злых существ. Поскольку рогатые архоны скитаются по дебрям Нирваны и Элизиума, они лучше многих понимают взгляды других небожителей.
-        </p>
-</div>
-        <div class="ability-tags">
-            <span class="tag">[ПД]</span>
-            <span class="tag">[Среднее]</span>
-            <span class="tag">[Архон]</span>
-            <span class="tag">[Небожитель]</span>
-        </div>
-
-        <div class="abilities-container">
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Характеристики</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Восприятие:</b> +11; ночное зрение</div>
-                    <div class="ability-info"><b>Языки:</b> Небесный, Драконий, Инфернальный; языки (tongues)</div>
-                    <div class="ability-info"><b>Навыки:</b> Акробатика +12, Природа +11, Религия +9, Скрытность +10, Выживание +11 (+15 к Выслеживанию)</div>
-                    <div class="ability-info"><b>Характеристики:</b> Сил +3, Лвк +4, Вын +3, Инт +1, Мдр +3, Хар +1</div>
-                    <div class="divider"></div>
-                    <div class="ability-info"><b>Предметы:</b> композитный длинный лук (20 стрел)</div>
-                    <div class="ability-info"><b>КБ:</b> 22</div>
-                    <div class="ability-info"><b>ПЗ:</b> 65</div>
-                    <div class="ability-info"><b>Стойкость:</b> +11</div>
-                    <div class="ability-info"><b>Рефлексы:</b> +10</div>
-                    <div class="ability-info"><b>Воля:</b> +11; статусный бонус +1 ко всем спасброскам против магии</div>
-                    <div class="ability-info"><b>Уязвимость:</b> зло 5</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Грозный Страж</div>
-                    <div class="ability-level">Аура 30 футов</div>
-                </div>
-                <div class="ability-description">
-                    (аура, сакральная, очарование) 30 футов. Враги, входящие в ауру или начинающие в ней свой ход должны совершить спасбросок Воли со СЛ 19.
-                </div>
-                <div class="option-block">
-                    <div class="option-title">Эффекты:</div>
-                    <p><b>Провал:</b> Враги получают статусный штраф –1 к броскам атаки, броскам заклинаний и броскам урона против любой другой цели в ауре на 24 часа или до тех пор, пока не нанесут урон архону, смотря что случится раньше.</p>
-                    <p><b>Критический провал:</b> Они также не могут использовать враждебные действия против любой другой цели, пока находятся в области ауры в течении 24 часов или до того, как нанесут урон архону.</p>
-                    <p>Вне зависимости от исхода существо затем невосприимчиво к эффектам Грозного Стража на 24 часа.</p>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Удар Возмездия</div>
-                </div>
-                <div class="ability-description">
-                    Рогатый архон может также совершить Удар Возмездия (Retributive Strike), используя свой композитный длинный лук.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Скорость</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Наземная:</b> 35 футов</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Ближний бой [одно действие]</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Атака:</b> рога +11 (магическое)</div>
-                    <div class="ability-info"><b>Урон:</b> <span class="damage">2d8+3</span> колющий + <span class="damage">1d6</span> добрый и Толчок (Push)</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Дальний бой [одно действие]</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Атака:</b> композитный длинный лук +14 (смертоносное 1d10, магическое, шаг дистанции 100 футов, перезарядка 0, дальнобойное)</div>
-                    <div class="ability-info"><b>Урон:</b> <span class="damage">1d8+4</span> колющий + <span class="damage">1d6</span> добрый</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Сакральные врождённые заклинания (СЛ 21)</div>
-                </div>
-                <div class="ability-details">
-                    <ul class="spells-list">
-                        <li><b>4-й:</b> пространственная дверь (dimension door) (×3)</li>
-                        <li><b>2-й:</b> зверь-посланник (animal messenger) (×3)</li>
-                        <li><b>1-й:</b> очарование (charm) (только животные; ×3), верный удар (true strike) (×3)</li>
-                        <li><b>Заговоры (2-й):</b> пляшущие огоньки (dancing lights)</li>
-                        <li><b>Постоянное (5-й):</b> языки (tongues)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Врата Архона</div>
-                    <div class="ability-level">Один раз в день</div>
-                </div>
-                <div class="ability-description">
-                    Раз в день, если архон видит, как другое существо творит пространственную дверь (dimension door), он может сотворить пространственную дверь (dimension door) как врождённое заклинание (усиленное до 5-го круга) в течении одного раунда, чтобы попытаться проследовать за этим существом на максимальное расстояние пространственной двери (dimension door) архона.
-                </div>
-                <div class="ability-effect">
-                    Если у пространственной двери (dimension door) архона хватает дистанции, архон появляется на том же расстоянии от существа и в том же направлении от него, что и до использования пространственной двери (dimension door).
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Прикосновение Милосердия [одно действие]</div>
-                </div>
-                <div class="ability-description">
-                    (исцеление, манипуляция, некромантия) Рогатый архон может прикоснуться к другому существу, чтобы принять на себя его раны, передавая до 30 ПЗ рогатого архона этому существу.
-                </div>
-                <div class="ability-effect">
-                    Рогатый архон не может передать больше ПЗ, чем у него есть в настоящий момент.
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Архон-гончая -->
-    <div class="creature-container">
-        <h1 class="creature-title">Архон-гончая</h1>
-        <div class="creature-level">Существо 4</div>
-        <div class="explanation-block">
-
-        <p class="subtitle">
-            Среди рядовых солдат Небесных армий мало кто более надёжен и предан делу, чем благородные архоны-гончие, воплощения добродетели усердия. В отличие от рогатых архонов, которые действуют на аналогичном уровне в великой небесной иерархии, архоны-гончие не ведут разведку в поисках зла и не выполняют разведывательные миссии на враждебной территории. Роль архона-гончей заключается в том, чтобы быть солдатом в центре битвы или, иногда, в качестве стража, которому поручено защищать определённое стратегическое местоположение или святое место.
-        </p>
-</div>
-        <div class="ability-tags">
-            <span class="tag">[ПД]</span>
-            <span class="tag">[Среднее]</span>
-            <span class="tag">[Архон]</span>
-            <span class="tag">[Небожитель]</span>
-        </div>
-
-        <div class="abilities-container">
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Характеристики</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Восприятие:</b> +13; ночное зрение</div>
-                    <div class="ability-info"><b>Языки:</b> Небесный, Драконий, Инфернальный; языки</div>
-                    <div class="ability-info"><b>Навыки:</b> Атлетика +12, Запугивание +10, Религия +9, Скрытность +10</div>
-                    <div class="ability-info"><b>Характеристики:</b> Сил +4, Лвк +2, Вын +4, Инт +0, Мдр +3, Хар +2</div>
-                    <div class="divider"></div>
-                    <div class="ability-info"><b>Предметы:</b> двуручный меч, полный латный доспех</div>
-                    <div class="ability-info"><b>КБ:</b> 22</div>
-                    <div class="ability-info"><b>ПЗ:</b> 70</div>
-                    <div class="ability-info"><b>Стойкость:</b> +14</div>
-                    <div class="ability-info"><b>Рефлексы:</b> +8</div>
-                    <div class="ability-info"><b>Воля:</b> +11; статусный бонус +1 ко всем спасброскам против магии</div>
-                    <div class="ability-info"><b>Уязвимость:</b> зло 5</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Удар Возмездия</div>
-                </div>
-                <div class="ability-description">
-                    Архон-гончая может также совершить Удар Возмездия (Retributive Strike).
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Скорость</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Наземная:</b> 35 футов</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Ближний бой [одно действие]</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Атака:</b> двуручный меч +14 (доброе, магическое, универсальное К)</div>
-                    <div class="ability-info"><b>Урон:</b> <span class="damage">1d12+6</span> режущий + <span class="damage">1d6</span> добрый</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Ближний бой [одно действие]</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Атака:</b> челюсти +14 (проворное, доброе, магическое)</div>
-                    <div class="ability-info"><b>Урон:</b> <span class="damage">1d6+6</span> колющий + <span class="damage">1d6</span> добрый</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Сакральные врождённые заклинания (СЛ 19)</div>
-                </div>
-                <div class="ability-details">
-                    <ul class="spells-list">
-                        <li><b>4‑й:</b> пространственная дверь (dimension door)</li>
-                        <li><b>Заговоры (2‑й):</b> сообщение (message)</li>
-                        <li><b>Постоянные (5‑й):</b> языки (tongues)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Врата Архона</div>
-                    <div class="ability-level">Один раз в день</div>
-                </div>
-                <div class="ability-description">
-                    Один раз в день, если архон видит, как другое существо творит пространственную дверь, архон может использовать заклинание пространственная дверь (усиленное до 5‑го круга) в течение 1 раунда, чтобы попытаться следовать за этим существом на максимальное расстояние, указанное в усиленной версии заклинания.
-                </div>
-                <div class="ability-effect">
-                    Если пространственная дверь архона обладает достаточной дистанцией, архон появляется на том же расстоянии и в том же направлении от существа, что и до того, как это существо использовало пространственную дверь.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Смена Облика [одно действие]</div>
-                    <div class="ability-level">Концентрация</div>
-                </div>
-                <div class="ability-description">
-                    (концентрация, сакральная, превращение, трансмутация) Архон-гончая может принимать облик любого псового животного от Маленького до Крупного.
-                </div>
-                <div class="ability-effect">
-                    Это не меняет его Скорость или бонусы атаки и урона его Ударов, но если атака укуса псовых обладает способностью «Нокдаун», то атака укуса архона-гончей получает эту способность, только пока он находится в этой форме.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Усердное Нападение [два действия]</div>
-                </div>
-                <div class="ability-description">
-                    Архон-гончая старательно наносит один Удар двуручным мечом и один Удар челюстями в любом порядке.
-                </div>
-                <div class="ability-effect">
-                    Эти атаки учитываются при расчёте штрафа за многократную атаку архона-гончей, но штраф за многократную атаку не увеличивается до окончания всех атак.
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Архон-легионер -->
-    <div class="creature-container">
-        <h1 class="creature-title">Архон-легионер</h1>
-        <div class="creature-level">Существо 7</div>
-        <div class="explanation-block">
-
-        <p class="subtitle">
-            Несмотря на свои пылающие клинки и тяжёлую броню, архоны-легионеры служат дипломатами архонов, предпочитая добиваться справедливости компромиссами и взаимной выгодой, а не мечом. Тем не менее, в битве с исчадиями, особенно с олицетворяющими грех гнева, архоны-легионеры непоколебимы, выступая под руководством божественных владык, таких как Иомедэй.
-        </p>
-</div>
-        <div class="ability-tags">
-            <span class="tag">[ПД]</span>
-            <span class="tag">[Среднее]</span>
-            <span class="tag">[Архон]</span>
-            <span class="tag">[Небожитель]</span>
-        </div>
-
-        <div class="abilities-container">
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Характеристики</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Восприятие:</b> +15; ночное зрение</div>
-                    <div class="ability-info"><b>Языки:</b> Небесный, Драконий, Инфернальный; языки (tongues)</div>
-                    <div class="ability-info"><b>Навыки:</b> Акробатика +13, Атлетика +14, Дипломатия +16, Запугивание +16, Религия +13, Выживание +14</div>
-                    <div class="ability-info"><b>Характеристики:</b> Сил +5, Лвк +2, Вын +4, Инт +1, Мдр +2, Хар +5</div>
-                    <div class="divider"></div>
-                    <div class="ability-info"><b>Предметы:</b> полный латный доспех</div>
-                    <div class="ability-info"><b>КБ:</b> 27</div>
-                    <div class="ability-info"><b>ПЗ:</b> 100</div>
-                    <div class="ability-info"><b>Стойкость:</b> +17</div>
-                    <div class="ability-info"><b>Рефлексы:</b> +11</div>
-                    <div class="ability-info"><b>Воля:</b> +15; статусный бонус +1 ко всем спасброскам против магии</div>
-                    <div class="ability-info"><b>Уязвимость:</b> зло 10</div>
-                    <div class="ability-info"><b>Сопротивление:</b> огонь 15</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Грозный Страж</div>
-                    <div class="ability-level">Аура 30 футов</div>
-                </div>
-                <div class="ability-description">
-                    (аура, сакральная, очарование) Как у рогатого архона, но со СЛ 23.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Удар Возмездия</div>
-                </div>
-                <div class="ability-description">
-                    Архон-легионер может также совершить Удар Возмездия (Retributive Strike), метнув своё пламя справедливости.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Скорость</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Наземная:</b> 30 футов</div>
-                    <div class="ability-info"><b>Полёт:</b> 60 футов</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Ближний бой [одно действие]</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Атака:</b> пламя справедливости +18 (магическое, универсальное К)</div>
-                    <div class="ability-info"><b>Урон:</b> <span class="damage">2d10+5</span> режущий + <span class="damage">1d6</span> огонь + <span class="damage">1d6</span> добрый</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Дальний бой [одно действие]</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Атака:</b> пламя справедливости +15 (магическое, шаг дистанции 30 футов, универсальное К)</div>
-                    <div class="ability-info"><b>Урон:</b> <span class="damage">2d10+5</span> режущий + <span class="damage">1d6</span> огонь + <span class="damage">1d6</span> добрый</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Сакральные врождённые заклинания (СЛ 24)</div>
-                </div>
-                <div class="ability-details">
-                    <ul class="spells-list">
-                        <li><b>4‑й:</b> пространственная дверь (dimension door) (произвольное)</li>
-                        <li><b>1‑й:</b> верный удар (true strike) (×3)</li>
-                        <li><b>Заговоры (4‑й):</b> свет (light), сообщение (message)</li>
-                        <li><b>Постоянное (5‑й):</b> языки (tongues)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Врата Архона</div>
-                    <div class="ability-level">Один раз в день</div>
-                </div>
-                <div class="ability-description">
-                    Как у рогатого архона.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Пламя Справедливости</div>
-                </div>
-                <div class="ability-description">
-                    (сакральная, эвокация) Дух праведности архона-легионера проявляется в его руках в виде могучего двуручного меча — пламени справедливости. Архон-легионер может метать это пламя справедливости в качестве дистанционной атаки.
-                </div>
-                <div class="ability-effect">
-                    Если его выбить из рук или метнуть, пламя справедливости исчезает после того, как приземлиться или нанесёт урон, и сразу же вновь появляется в руках архона-легионера.
-                </div>
-                <div class="option-block">
-                    <div class="option-title">Критическое попадание:</div>
-                    <p>Урон от огня пламени справедливости наносит максимальный урон (6 на d6) перед тем, как удвоиться для критического попадания, и цель также получает <span class="damage">1d10</span> продолжительного урона от огня.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Архон-щитоносец -->
-    <div class="creature-container">
-        <h1 class="creature-title">Архон-щитоносец</h1>
-        <div class="creature-level">Существо 10</div>
-        <div class="explanation-block">
-
-        <p class="subtitle">
-            Архоны-щитоносцы обороняют крепости Небес от набегов исчадий. Они выстраиваются вооружённые копьями и щитами и способные противостоять любому натиску. Под доспехами они защищены стальной кожей. Благодаря их огромной силе и внушительным размерам из них получаются превосходные защитники слабых, и щитоносцев порой призывают на Материальный план, чтобы отразить атаки полчищ злодеев.
-        </p>
-</div>
-        <div class="ability-tags">
-            <span class="tag">[ПД]</span>
-            <span class="tag">[Крупное]</span>
-            <span class="tag">[Архон]</span>
-            <span class="tag">[Небожитель]</span>
-        </div>
-
-        <div class="abilities-container">
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Характеристики</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Восприятие:</b> +19; ночное зрение</div>
-                    <div class="ability-info"><b>Языки:</b> Небесный, Драконий, Инфернальный; языки (tongues)</div>
-                    <div class="ability-info"><b>Навыки:</b> Атлетика +21, Дипломатия +19, Запугивание +19, Религия +19, Выживание +17</div>
-                    <div class="ability-info"><b>Характеристики:</b> Сил +5, Лвк +1, Вын +7, Инт +2, Мдр +3, Хар +3</div>
-                    <div class="divider"></div>
-                    <div class="ability-info"><b>Предметы:</b> полный латный доспех +1</div>
-                    <div class="ability-info"><b>КБ:</b> 31 (33 с поднятым щитом)</div>
-                    <div class="ability-info"><b>ПЗ:</b> 125</div>
-                    <div class="ability-info"><b>Стойкость:</b> +23</div>
-                    <div class="ability-info"><b>Рефлексы:</b> +15</div>
-                    <div class="ability-info"><b>Воля:</b> +19; статусный бонус +1 ко всем спасброскам против магии</div>
-                    <div class="ability-info"><b>Уязвимость:</b> зло 10</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Превращающиеся Руки [одно действие]</div>
-                </div>
-                <div class="ability-description">
-                    (сакральная, трансмутация) Руки архона-щитоносца могут превращаться в святое копьё мощи +1 или малый прочный щит и обратно в руки.
-                </div>
-                <div class="ability-effect">
-                    Превращение не восстанавливает ПЗ предметам, и если оружие или щит полностью уничтожены, архон теряет эту руку, пока не будет подвергнут заклинанию регенерации (regenerate) или подобной магии. Если архон-щитоносец погибает, его оружие и щит можно забрать, но они исчезают через 24 часа.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Живой щит</div>
-                </div>
-                <div class="ability-description">
-                    Щит архона-щитоносца — средоточие его отваги и духа. Его щит всегда поднят без использования действия Поднять Щит (Raise a Shield), и он может использовать Блок Щитом (Shield Block) в качестве свободного действия вместо реакции (Твёрдость 10, ПЗ 80).
-                </div>
-                <div class="option-block">
-                    <div class="option-title">Защита союзников:</div>
-                    <p>Когда союзник в пределах 10 футов становится целью атаки, архон-щитоносец может использовать свою реакцию Блок Щитом в качестве свободного действия, снижая урон, получаемый этим союзником, но все остальные правила Блока Щитом остаются в силе.</p>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Грозный Страж</div>
-                    <div class="ability-level">Аура 30 футов</div>
-                </div>
-                <div class="ability-description">
-                    (аура, сакральная, очарование) Как у рогатого архона, но со СЛ 27.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Удар Возмездия</div>
-                </div>
-                <div class="ability-description">
-                    Архон-щитоносец может также совершить Удар Возмездия (Retributive Strike).
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Скорость</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Наземная:</b> 30 футов</div>
-                    <div class="ability-info"><b>Полёт:</b> 60 футов</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Ближний бой [одно действие]</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Атака:</b> святое копьё мощи +22 (магическое, досягаемость 10 футов)</div>
-                    <div class="ability-info"><b>Урон:</b> <span class="damage">2d6+10</span> колющий + <span class="damage">1d6</span> добрый</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Сакральные врождённые заклинания (СЛ 27)</div>
-                </div>
-                <div class="ability-details">
-                    <ul class="spells-list">
-                        <li><b>4‑й:</b> пространственная дверь (dimension door) (произвольное)</li>
-                        <li><b>2‑й:</b> щит для другого (shield other) (×3)</li>
-                        <li><b>1‑й:</b> верный удар (true strike) (×3)</li>
-                        <li><b>Заговоры (5‑й):</b> сообщение (message)</li>
-                        <li><b>Постоянное (5‑й):</b> языки (tongues)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Врата Архона</div>
-                    <div class="ability-level">Один раз в день</div>
-                </div>
-                <div class="ability-description">
-                    Как у рогатого архона.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Мужественная Рокировка</div>
-                </div>
-                <div class="ability-description">
-                    Когда архон-щитоносец использует своё врождённое заклинание пространственная дверь (dimension door), он может решить переместиться в пространство добровольного союзника, которого может видеть в пределах дистанции.
-                </div>
-                <div class="ability-effect">
-                    В таком случае союзник меняется местами с архоном, появляясь в только что освобождённом архоном пространстве, как если бы он сотворил пространственную дверь (dimension door).
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Архон-глашатай -->
-    <div class="creature-container">
-        <h1 class="creature-title">Архон-глашатай</h1>
-        <div class="creature-level">Существо 14</div>
-        <div class="explanation-block">
-
-        <p class="subtitle">
-            Архоны-глашатаи — это посланники, эмиссары и рассказчики — воплощения доброты. Они используют истории и аллегории, чтобы предотвратить кровопролитие, и среди всех архонов они, чаще всего, работают вместе с ангелами, что, возможно, приводит к сходству их форм. Когда дипломатия невозможна, архоны-глашатаи собирают праведников на битву — одного ободряющего взгляда архона-глашатая часто бывает достаточно, чтобы снова вселить в потрясённого союзника стойкое мужество.
-        </p>
-</div>
-        <div class="ability-tags">
-            <span class="tag">[ПД]</span>
-            <span class="tag">[Среднее]</span>
-            <span class="tag">[Архон]</span>
-            <span class="tag">[Небожитель]</span>
-        </div>
-
-        <div class="abilities-container">
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Характеристики</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Восприятие:</b> +26; ночное зрение</div>
-                    <div class="ability-info"><b>Языки:</b> Небесный, Драконий, Инфернальный; языки</div>
-                    <div class="ability-info"><b>Навыки:</b> Акробатика +25, Дипломатия +29, Запугивание +28, Природа +23, Религия +23, Выступление +31, Скрытность +25</div>
-                    <div class="ability-info"><b>Характеристики:</b> Сил +7, Лвк +5, Вын +5, Инт +3, Мдр +6, Хар +8</div>
-                    <div class="divider"></div>
-                    <div class="ability-info"><b>Предметы:</b> полуторный меч мощи +2, полный латный доспех стойкости +1, труба виртуоза</div>
-                    <div class="ability-info"><b>КБ:</b> 36</div>
-                    <div class="ability-info"><b>ПЗ:</b> 285</div>
-                    <div class="ability-info"><b>Стойкость:</b> +24</div>
-                    <div class="ability-info"><b>Рефлексы:</b> +24</div>
-                    <div class="ability-info"><b>Воля:</b> +27; статусный бонус +1 для всех спасбросков против магии</div>
-                    <div class="ability-info"><b>Сопротивление:</b> звук 15</div>
-                    <div class="ability-info"><b>Уязвимость:</b> зло 15</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Удар Возмездия</div>
-                </div>
-                <div class="ability-description">
-                    Архон-глашатай может также совершить Удар Возмездия (Retributive Strike).
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Скорость</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Наземная:</b> 35 футов</div>
-                    <div class="ability-info"><b>Полёт:</b> 60 футов</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Ближний бой [одно действие]</div>
-                </div>
-                <div class="ability-details">
-                    <div class="ability-info"><b>Атака:</b> полуторный меч +29 (доброе, магическое, универсальное К)</div>
-                    <div class="ability-info"><b>Урон:</b> <span class="damage">2d12+13</span> режущий + <span class="damage">2d6</span> звуковой + <span class="damage">1d6</span> добрый</div>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Сакральные врождённые заклинания (СЛ 34)</div>
-                </div>
-                <div class="ability-details">
-                    <ul class="spells-list">
-                        <li><b>7‑й:</b> исцеление (heal) (×2), звуковой взрыв (sound burst)</li>
-                        <li><b>6‑й:</b> героизм (heroism), фанатичная убеждённость (zealous conviction)</li>
-                        <li><b>5‑й:</b> изгнание (banishment), дыхание жизни (breath of life)</li>
-                        <li><b>4‑й:</b> пространственная дверь (dimension door) (произвольное)</li>
-                        <li><b>3‑й:</b> круг защиты (circle of protection) (только от зла; ×2)</li>
-                        <li><b>Заговоры (6‑й):</b> сообщение (message)</li>
-                        <li><b>Постоянные (5‑й):</b> языки (tongues)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Врата Архона</div>
-                    <div class="ability-level">Один раз в день</div>
-                </div>
-                <div class="ability-description">
-                    Как у архона-гончей.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Доброе Слово [одно действие]</div>
-                </div>
-                <div class="ability-description">
-                    (слух, сакральная, эмоция, очарование, язык, ментальный) Архон-глашатай воздаёт союзнику похвалу или поощрение.
-                </div>
-                <div class="ability-effect">
-                    Архон пытается противодействовать одному эффекту с атрибутом «эмоция» действующему на союзника (с модификатором противодействия +24), и архон и союзник оба получают статусный бонус +1 к броскам атаки и спасброскам в течение 1 раунда.
-                </div>
-            </div>
-
-            <div class="ability-card">
-                <div class="ability-header">
-                    <div class="ability-title">Трубный Звук [два действия]</div>
-                </div>
-                <div class="ability-description">
-                    (слух, сакральная, эмоция, очарование, ментальный) Архон-глашатай мощно дует в свой рог, создавая звук такой красоты и величия, что те, кто его слышит, замирают в благоговейном трепете.
-                </div>
-                <div class="ability-effect">
-                    Не-архоны в радиусе 100 футов должны выполнить спасбросок Стойкости со СЛ 34. После они временно невосприимчивы в течение 10 минут.
-                </div>
-                <div class="option-block">
-                    <div class="option-title">Эффекты (спасбросок Стойкости СЛ 34):</div>
-                    <p><b>Критический успех:</b> Существо не затронуто</p>
-                    <p><b>Успех:</b> Существо застигнуто врасплох (flat-footed)</p>
-                    <p><b>Провал:</b> Существо в шоке (stunned) 1 и застигнуто врасплох до тех пор, пока оно в шоке</p>
-                    <p><b>Критический провал:</b> Существо парализовано на 1 раунд</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-
-
-
-
+<script>
+    (function() {
+        const cards = document.querySelectorAll('.creature-card');
+        function saveState(id, isOpen) {
+            localStorage.setItem('angelArkhonToggle_' + id, isOpen ? 'open' : 'closed');
+        }
+        function loadState(id) {
+            const val = localStorage.getItem('angelArkhonToggle_' + id);
+            if (val === 'open') return true;
+            if (val === 'closed') return false;
+            return true; // по умолчанию открыто
+        }
+
+        cards.forEach(card => {
+            const id = card.getAttribute('data-id');
+            if (!id) return;
+            const body = card.querySelector('.card-body');
+            const header = card.querySelector('.card-header');
+            const icon = header?.querySelector('.toggle-icon');
+            if (!body || !header) return;
+
+            const shouldBeOpen = loadState(id);
+            if (!shouldBeOpen) {
+                body.classList.add('collapsed');
+                if (icon) icon.style.transform = 'rotate(0deg)';
+            } else {
+                body.classList.remove('collapsed');
+                if (icon) icon.style.transform = 'rotate(180deg)';
+            }
+
+            header.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isCollapsed = body.classList.contains('collapsed');
+                if (isCollapsed) {
+                    body.classList.remove('collapsed');
+                    if (icon) icon.style.transform = 'rotate(180deg)';
+                    saveState(id, true);
+                } else {
+                    body.classList.add('collapsed');
+                    if (icon) icon.style.transform = 'rotate(0deg)';
+                    saveState(id, false);
+                }
+            });
+        });
+    })();
+</script>
 </body>
 </html>
-
-
-<style>
-
-</style>
-<script>
-
-</script>
