@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ангелы и Архоны — золотой бестиарий</title>
+    <title>Ангелы и Архоны — бестиарий</title>
     <style>
         * {
             box-sizing: border-box;
@@ -12,9 +12,9 @@
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
-            background: #fff9ef;   /* тёплый желтоватый фон */
-            color: #3b2e1f;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: #fef9e6;
+            color: #2c2416;
             line-height: 1.5;
             padding: 2rem 1rem;
             display: flex;
@@ -27,29 +27,25 @@
             width: 100%;
         }
 
+        /* минималистичные заголовки */
         .main-title {
-            color: #b87c2e;
-            font-size: 2.2rem;
+            color: #b27022;
+            font-size: 2rem;
+            font-weight: 600;
             margin-bottom: 1.8rem;
-            padding-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
             text-align: center;
-            border-bottom: 3px solid #f3d9a4;
-            font-weight: 700;
-            letter-spacing: -0.3px;
-            text-shadow: 1px 1px 0 rgba(255,235,190,0.6);
+            border-bottom: 2px solid #e9d3a4;
+            letter-spacing: -0.2px;
         }
 
-        /* карточка существа */
+        /* карточка: скругленные углы, четкая рамка */
         .creature-card {
-            background: #ffffffd9;
-            backdrop-filter: blur(0px);
-            background: #fffef7;
-            border-radius: 1.5rem;
+            background: #ffffff;
+            border-radius: 16px;
             margin-bottom: 1.5rem;
-            box-shadow: 0 6px 14px rgba(160, 120, 40, 0.08);
-            border: 1px solid #f7e5b5;
+            border: 1px solid #e0cfae;
             overflow: hidden;
-            transition: all 0.2s;
         }
 
         /* заголовок-переключатель */
@@ -57,16 +53,16 @@
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            padding: 1.2rem 1.8rem;
-            background: #fffcf0;
+            padding: 1rem 1.5rem;
+            background: #fffbf0;
             cursor: pointer;
             user-select: none;
-            transition: background 0.2s;
-            border-bottom: 1px solid #f5e2bc;
+            border-bottom: 1px solid #ece0c7;
+            transition: background 0.1s ease;
         }
 
         .card-header:hover {
-            background: #fff7e4;
+            background: #fff7e6;
         }
 
         .title-group {
@@ -74,62 +70,58 @@
         }
 
         .creature-title {
-            font-size: 1.7rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #b8712c, #e09d32);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #a5611a;
             margin: 0 0 0.2rem 0;
-            line-height: 1.2;
+            letter-spacing: -0.2px;
         }
 
         .creature-level {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #b97f3a;
-            letter-spacing: 0.3px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #b87a3a;
+            letter-spacing: 0.2px;
         }
 
-        /* иконка раскрытия — бледная, едва заметная */
+        /* иконка — почти незаметная, тонкая */
         .toggle-icon {
-            font-size: 1.4rem;
+            font-size: 1.25rem;
             font-weight: 300;
-            color: #e9c48b;
-            transition: transform 0.2s ease, color 0.2s;
+            color: #dbbc86;
+            transition: transform 0.15s;
             margin-left: 1rem;
-            opacity: 0.7;
+            opacity: 0.65;
         }
         .card-header:hover .toggle-icon {
-            color: #dba551;
             opacity: 0.9;
+            color: #c49a54;
         }
 
-        /* внутреннее содержимое */
+        /* тело карточки */
         .card-body {
-            padding: 0 0 1.2rem 0;
-            border-top: 1px solid #f7e9cf;
-            background: #fffef7;
+            padding: 0;
+            border-top: none;
+            background: #ffffff;
         }
 
         .card-body.collapsed {
             display: none;
         }
 
-        /* блок lore — жёлтая палитра */
+        /* пояснительный блок — скругленные углы внутри */
         .explanation-block {
-            background-color: #fff6e6;
-            border-left: 5px solid #f3c26b;
-            margin: 1rem 1.8rem 1.2rem 1.8rem;
-            padding: 1rem 1.25rem;
-            border-radius: 1rem;
-            box-shadow: inset 0 0 0 1px #fff0d4;
+            background-color: #fff7ea;
+            border-left: 4px solid #e9bc6e;
+            margin: 1rem 1.5rem 1rem 1.5rem;
+            padding: 0.9rem 1.2rem;
+            border-radius: 12px;
         }
 
         .subtitle {
-            font-size: 0.95rem;
-            line-height: 1.55;
-            color: #5c481f;
+            font-size: 0.92rem;
+            line-height: 1.5;
+            color: #4d3e28;
             text-align: justify;
         }
 
@@ -138,133 +130,142 @@
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin: 0 1.8rem 1rem 1.8rem;
+            margin: 0 1.5rem 0.8rem 1.5rem;
         }
 
         .tag {
-            background: #f8efda;
-            color: #b5732e;
-            padding: 0.2rem 0.8rem;
-            border-radius: 2rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            border: 1px solid #f3dfb2;
+            background: #f2e9d8;
+            color: #8b5a2b;
+            padding: 0.2rem 0.7rem;
+            border-radius: 24px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            border: 1px solid #e2d0b0;
         }
 
+        /* контейнер способностей */
         .abilities-container {
-            padding: 0 1.8rem 0.5rem 1.8rem;
+            padding: 0 1.5rem 0.5rem 1.5rem;
         }
 
         .ability-card {
-            background: #fffff5;
-            border-radius: 1rem;
-            margin-bottom: 1rem;
-            border: 1px solid #f3e2bd;
+            background: #fffef9;
+            border: 1px solid #e8ddc4;
+            border-radius: 14px;
+            margin-bottom: 0.9rem;
+            overflow: hidden;
         }
 
         .ability-header {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            padding: 0.75rem 1rem;
-            background: #fffcf2;
-            border-bottom: 1px solid #f7e6c6;
+            padding: 0.6rem 0.9rem;
+            background: #fefcf5;
+            border-bottom: 1px solid #efe3cb;
         }
 
         .ability-title {
-            font-weight: 700;
-            font-size: 1rem;
-            color: #a5661a;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #9c5f26;
         }
 
         .ability-level {
-            background: #f7efdd;
-            padding: 0.2rem 0.65rem;
-            border-radius: 2rem;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: #b76e2a;
+            background: #efeadb;
+            padding: 0.15rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: #8a5a2a;
         }
 
         .ability-description,
         .ability-effect {
-            padding: 0.75rem 1rem;
-            font-size: 0.9rem;
-            color: #4b3a1e;
+            padding: 0.7rem 0.9rem;
+            font-size: 0.88rem;
+            color: #3a2e1c;
         }
 
         .ability-effect {
-            background: #fff8ea;
-            border-radius: 0.75rem;
-            margin: 0.5rem 1rem;
-            border-left: 3px solid #f5cf93;
+            background: #fefaf1;
+            border-left: 3px solid #e2ca98;
+            margin: 0.4rem 0.9rem;
+            border-radius: 8px;
         }
 
         .option-block {
-            background: #fff7e8;
-            margin: 0.75rem 1rem;
-            padding: 0.7rem 1rem;
-            border-radius: 0.75rem;
-            border-left: 3px solid #f3d9a4;
+            background: #fefaf2;
+            margin: 0.6rem 0.9rem;
+            padding: 0.6rem 0.9rem;
+            border-left: 3px solid #e0cfa4;
+            border-radius: 10px;
             font-size: 0.85rem;
         }
 
         .option-title {
-            font-weight: 700;
-            margin-bottom: 0.3rem;
-            color: #a4661c;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+            color: #a06427;
         }
 
         .damage {
-            font-family: monospace;
-            background: #f3e5cd;
-            padding: 0.1rem 0.4rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            color: #bc6f25;
+            font-family: 'SF Mono', 'Courier New', monospace;
+            background: #efe7d6;
+            padding: 0.1rem 0.35rem;
+            font-weight: 500;
+            color: #b55f1c;
+            font-size: 0.85rem;
+            border-radius: 8px;
         }
 
         .spells-list {
-            padding-left: 1.25rem;
-            margin: 0.5rem 0;
+            padding-left: 1.2rem;
+            margin: 0.3rem 0;
             font-size: 0.85rem;
         }
 
         .ability-details {
-            padding: 0.75rem 1rem;
+            padding: 0.6rem 0.9rem;
         }
 
         .ability-info {
             font-size: 0.85rem;
-            margin-bottom: 0.3rem;
-            color: #5c481f;
+            margin-bottom: 0.25rem;
+            color: #4e3e26;
         }
 
         .divider {
             height: 1px;
-            background: #f3e2bd;
-            margin: 0.75rem 0;
+            background: #e8ddc4;
+            margin: 0.6rem 0;
         }
 
         .info-note {
-            background: #fff6e4;
-            margin: 1rem 1.8rem 1.5rem 1.8rem;
-            padding: 1rem 1.25rem;
-            border-radius: 1rem;
-            border: 1px solid #f9e8c9;
+            background: #fefaf2;
+            margin: 0.8rem 1.5rem 1.3rem 1.5rem;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #efe3cc;
+            border-radius: 14px;
         }
+
         .info-note h3 {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-            color: #b87c2e;
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            color: #a56524;
+        }
+
+        .info-note p {
+            font-size: 0.85rem;
         }
 
         @media (max-width: 640px) {
             .card-header {
-                padding: 1rem 1.2rem;
+                padding: 0.8rem 1rem;
             }
             .creature-title {
-                font-size: 1.4rem;
+                font-size: 1.3rem;
             }
             .explanation-block,
             .ability-tags,
@@ -278,11 +279,9 @@
 </head>
 <body>
 <div class="page-wrapper">
-    <div class="main-title">Ангелы</div>
+    <div class="main-title">✦ Ангелы и Архоны ✦</div>
 
-    <!-- **************************************** -->
-    <!-- КАССИСИАН (Ангел архивов) -->
-    <!-- **************************************** -->
+    <!-- ========================= КАССИСИАН ========================= -->
     <div class="creature-card" data-id="cassian">
         <div class="card-header">
             <div class="title-group">
@@ -298,16 +297,16 @@
                 <div class="ability-card"><div class="ability-header"><div class="ability-title">Характеристики</div></div><div class="ability-details"><div class="ability-info"><b>Восприятие:</b> +6; ночное зрение</div><div class="ability-info"><b>Языки:</b> Небесный, Общий, Драконий, Инфернальный</div><div class="ability-info"><b>Навыки:</b> Акробатика +6, Дипломатия +6, Религия +6, Скрытность +6</div><div class="ability-info"><b>Характеристики:</b> Сил -1, Лвк +1, Вын +2, Инт -1, Мдр +1, Хар +1</div><div class="divider"></div><div class="ability-info"><b>КБ:</b> 18 (статусный бонус +1 против злых существ)</div><div class="ability-info"><b>ПЗ:</b> 20</div><div class="ability-info"><b>Стойкость:</b> +7, <b>Рефлексы:</b> +6, <b>Воля:</b> +4</div><div class="ability-info"><b>Уязвимость:</b> зло 3, <b>Сопротивление:</b> холод 3, огонь 3</div></div></div>
                 <div class="ability-card"><div class="ability-header"><div class="ability-title">Предоставление защиты</div><div class="ability-level">Пассивно</div></div><div class="ability-description">Не-злое существо может носить добровольного кассисиана в качестве шлема. В этом состоянии кассисиан не может совершать действий, но его статусный бонус +1 к КБ и спасброскам против злых существ также распространяется на носителя.</div></div>
                 <div class="ability-card"><div class="ability-header"><div class="ability-title">Скорость</div></div><div class="ability-details"><div class="ability-info"><b>Полёт:</b> 40 футов</div></div></div>
-                <div class="ability-card"><div class="ability-header"><div class="ability-title">Ближний бой [одно действие]</div></div><div class="ability-details"><div class="ability-info"><b>Атака:</b> удар головой +6 (проворное, фехтовальное, добро, магическое)</div><div class="ability-info"><b>Урон:</b> <span class="damage">1d6-1</span> дробящий + <span class="damage">1d4</span> добрый</div></div></div>
+                <div class="ability-card"><div class="ability-header"><div class="ability-title">Ближний бой</div></div><div class="ability-details"><div class="ability-info"><b>Атака:</b> удар головой +6 (проворное, добро, магическое)</div><div class="ability-info"><b>Урон:</b> <span class="damage">1d6-1</span> дробящий + <span class="damage">1d4</span> добрый</div></div></div>
                 <div class="ability-card"><div class="ability-header"><div class="ability-title">Сакральные врождённые заклинания (СЛ 16)</div></div><div class="ability-details"><ul class="spells-list"><li><b>4-й:</b> чтение знамений</li><li><b>1-й:</b> обнаружение мировоззрения (только зло), исцеление</li><li><b>Заговоры:</b> определение направления, свет</li></ul></div></div>
                 <div class="ability-card"><div class="ability-header"><div class="ability-title">Лучи из глаз [два действия]</div></div><div class="ability-description">Выпускает лучи тепла или холода, <span class="damage">2d6</span> урона (Рефлекс СЛ 17) по линии 15 футов. Перезарядка <span class="damage">1d4</span> раундов.</div></div>
                 <div class="ability-card"><div class="ability-header"><div class="ability-title">Хранилище знаний</div></div><div class="ability-description">Обладает совершенной памятью. Может совершать проверки Знания на любую тему, если сталкивался с ней раньше.</div></div>
             </div>
-            <div class="info-note"><h3>Дополнительная информация</h3><p>Ангелы обычно живут в Нирване или других Небесных планах, но могут быть призваны на Материальный план.</p></div>
+            <div class="info-note"><h3>Дополнительно</h3><p>Ангелы обычно живут в Нирване или других Небесных планах, но могут быть призваны на Материальный план.</p></div>
         </div>
     </div>
 
-    <!-- ХОРАЛЬНЫЙ АНГЕЛ -->
+    <!-- ========================= ХОРАЛЬНЫЙ АНГЕЛ ========================= -->
     <div class="creature-card" data-id="choral">
         <div class="card-header">
             <div class="title-group"><div class="creature-title">Хоральный ангел</div><div class="creature-level">Существо 6</div></div>
@@ -325,7 +324,7 @@
         </div>
     </div>
 
-    <!-- БАЛИСС (ангел-исповедник) -->
+    <!-- ========================= БАЛИСС ========================= -->
     <div class="creature-card" data-id="balisse">
         <div class="card-header">
             <div class="title-group"><div class="creature-title">Балисс (Ангел-исповедник)</div><div class="creature-level">Существо 8</div></div>
@@ -343,7 +342,7 @@
         </div>
     </div>
 
-    <!-- МОВАНИЧЕСКИЙ ДЭВА -->
+    <!-- ========================= МОВАНИЧЕСКИЙ ДЭВА ========================= -->
     <div class="creature-card" data-id="movanic">
         <div class="card-header">
             <div class="title-group"><div class="creature-title">Мованический дэва (Ангел-хранитель)</div><div class="creature-level">Существо 10</div></div>
@@ -360,7 +359,7 @@
         </div>
     </div>
 
-    <!-- МОНАДИЧЕСКИЙ ДЭВА -->
+    <!-- ========================= МОНАДИЧЕСКИЙ ДЭВА ========================= -->
     <div class="creature-card" data-id="monadic">
         <div class="card-header">
             <div class="title-group"><div class="creature-title">Монадический дэва (Ангел душ)</div><div class="creature-level">Существо 12</div></div>
@@ -377,7 +376,7 @@
         </div>
     </div>
 
-    <!-- АСТРАЛЬНЫЙ ДЭВА -->
+    <!-- ========================= АСТРАЛЬНЫЙ ДЭВА ========================= -->
     <div class="creature-card" data-id="astral">
         <div class="card-header">
             <div class="title-group"><div class="creature-title">Астральный дэва (Ангел-посол)</div><div class="creature-level">Существо 14</div></div>
@@ -394,8 +393,8 @@
         </div>
     </div>
 
-    <!-- ************************** АРХОНЫ ************************** -->
-    <div class="main-title">Архоны</div>
+    <!-- ===================== АРХОНЫ ===================== -->
+    <div class="main-title">⚔️ Архоны ⚔️</div>
 
     <!-- АРХОН-СВЕТОЧ -->
     <div class="creature-card" data-id="lantern">
@@ -429,7 +428,7 @@
     <div class="creature-card" data-id="hound">
         <div class="card-header"><div class="title-group"><div class="creature-title">Архон-гончая</div><div class="creature-level">Существо 4</div></div><div class="toggle-icon">▼</div></div>
         <div class="card-body">
-            <div class="explanation-block"><p class="subtitle">Воплощение усердия, надёжные солдаты Небес. Защищают святые места и стратегические позиции.</p></div>
+            <div class="explanation-block"><p class="subtitle">Воплощение усердия, надёжные солдаты Небес. Защищают святые места.</p></div>
             <div class="ability-tags"><span class="tag">[ПД]</span><span class="tag">[Среднее]</span><span class="tag">[Архон]</span><span class="tag">[Небожитель]</span></div>
             <div class="abilities-container"><div class="ability-card"><div class="ability-header"><div class="ability-title">Усердное нападение</div></div><div class="ability-description">Две атаки (двуручный меч +14, челюсти +14) без увеличения штрафа до окончания атак.</div></div></div>
         </div>
@@ -459,9 +458,9 @@
     <div class="creature-card" data-id="herald">
         <div class="card-header"><div class="title-group"><div class="creature-title">Архон-глашатай</div><div class="creature-level">Существо 14</div></div><div class="toggle-icon">▼</div></div>
         <div class="card-body">
-            <div class="explanation-block"><p class="subtitle">Посланники и рассказчики, воплощение доброты. Предотвращают кровопролитие историями и аллегориями. Трубный звук вселяет трепет во врагов.</p></div>
+            <div class="explanation-block"><p class="subtitle">Посланники и рассказчики, воплощение доброты. Предотвращают кровопролитие историями. Трубный звук вселяет трепет во врагов.</p></div>
             <div class="ability-tags"><span class="tag">[ПД]</span><span class="tag">[Среднее]</span><span class="tag">[Архон]</span><span class="tag">[Небожитель]</span></div>
-            <div class="abilities-container"><div class="ability-card"><div class="ability-header"><div class="ability-title">Трубный звук [два действия]</div></div><div class="ability-description">Не-архоны в радиусе 100 футов Стойкость СЛ 34: успех — flat-footed, провал — stunned 1, крит. провал — парализован 1 раунд.</div></div>
+            <div class="abilities-container"><div class="ability-card"><div class="ability-header"><div class="ability-title">Трубный звук</div></div><div class="ability-description">Не-архоны в радиусе 100 футов Стойкость СЛ 34: успех — flat-footed, провал — stunned 1, крит. провал — парализован 1 раунд.</div></div>
             <div class="ability-card"><div class="ability-header"><div class="ability-title">Доброе слово</div></div><div class="ability-description">Противодействует эффекту с эмоцией (модификатор +24), даёт +1 к атакам/спасброскам союзнику и себе на 1 раунд.</div></div></div>
         </div>
     </div>
@@ -477,7 +476,7 @@
             const val = localStorage.getItem('angelArkhonToggle_' + id);
             if (val === 'open') return true;
             if (val === 'closed') return false;
-            return true; // по умолчанию открыто
+            return true;
         }
 
         cards.forEach(card => {
